@@ -1,0 +1,40 @@
+@import '../untils/variables';
+
+.button {
+  margin: 0;
+  padding: 14px;
+  color: $button-color;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  font-family:  $general-font;
+  border: 1px solid $button-border-color;
+  border-radius: 6px;
+  background: $button-background-color;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    color: $button-color-hover;
+    background: $button-background-color-hover;
+  }
+
+  &:focus {
+    border-color: $form-input-border-color-focus;
+    box-shadow: 0 0 0 2px $form-input-outline-color-focus;
+    outline: none;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+
+  &--form-action {
+    flex-grow: 1;
+    min-width: calc(33.3% - 20px);
+    margin: 0 10px;
+  }
+}
+

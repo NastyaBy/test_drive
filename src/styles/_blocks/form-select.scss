@@ -1,0 +1,53 @@
+@import '../untils/variables';
+
+.form-select {
+  display: flex;
+  align-items: center;
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 5px 0;
+    border-color: $form-select-border-color-arrow transparent transparent transparent;
+    margin-left: -21px;
+    margin-right: 6px;
+    pointer-events: none;
+  }
+
+  &--time {
+    min-width: 75px;
+  }
+  &--ml10 {
+    margin-left: 10px;
+  }
+
+  &__label {
+    margin-right: 5px;
+  }
+  &__input {
+    font-family: $general-font;
+    width: 100%;
+    font-size: 13px;
+    border: 1px solid $form-select-border-color;
+    border-radius: 6px;
+    padding: 10px 20px 10px 10px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:hover {
+      border-color: $form-input-border-color-hover;
+
+      &[disabled] {
+        border-color: $form-select-border-color;
+      }
+    }
+
+    &:focus {
+      border-color: $form-input-border-color-focus;
+      box-shadow: 0 0 0 2px $form-input-outline-color-focus;
+      outline: none;
+    }
+  }
+}

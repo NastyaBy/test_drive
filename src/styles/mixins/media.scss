@@ -1,0 +1,19 @@
+@import "../untils/variables";
+
+@mixin media-tablet {
+  @media (min-width: $mediaWidthTabletHorizontal){
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (min-width: $mediaWidthLaptop){
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (min-width: $width){
+    @content;
+  }
+}

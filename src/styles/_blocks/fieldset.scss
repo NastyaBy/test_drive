@@ -1,0 +1,58 @@
+@import '../untils/variables';
+
+.fieldset {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    padding-bottom: 5px;
+    padding-left: 15px;
+    font-size: 17px;
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+
+    &--date {
+      align-items: center;
+    }
+  }
+
+  &__time-divider {
+    margin: 0 5px;
+  }
+
+  &__dropdown {
+    display: none;
+    position: absolute;
+    z-index: 101;
+    top: 100%;
+    left: 0;
+    margin: 4px 0 0 0;
+    padding: 30px 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    border-radius: 6px;
+
+    &--show {
+      display: block;
+    }
+  }
+
+  &__blackout {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+
+    &--show {
+      display: block;
+    }
+  }
+}

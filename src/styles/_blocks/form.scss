@@ -1,0 +1,39 @@
+@import '../untils/variables';
+
+.form {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: self-start;
+  max-height: 100vh;
+  padding: 20px 10px 10px;
+  overflow: auto;
+  background: $form-background-color;
+  border: solid $form-border-color;
+  border-width: 1px 0 1px 1px;
+  box-shadow: 0 0 30px $form-box-shadow-color;
+  border-radius: 10px 0 0 10px;
+
+  &__fieldset {
+    flex-shrink: 0;
+    padding: 0 10px;
+
+    &--full {
+      width: 100%;
+    }
+
+    &--half {
+      width: 50%;
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto 0 0;
+    padding: 10px 0;
+  }
+}

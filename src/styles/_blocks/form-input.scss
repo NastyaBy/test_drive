@@ -1,0 +1,56 @@
+@import '../untils/variables';
+
+.form-input {
+  font-family: $general-font;
+  font-size: 13px;
+  border: 1px solid $form-input-border-color;
+  padding: 10px;
+  border-radius: 6px;
+
+  &[readonly] {
+    background: $form-input-background-readonly;
+  }
+
+  &:hover {
+    border-color: $form-input-border-color-hover;
+
+    &[readonly] {
+      background: $form-input-background-readonly-hover;
+      border-color: $form-input-border-color;
+    }
+  }
+
+  &:focus {
+    border-color: $form-input-border-color-focus;
+    box-shadow: 0 0 0 2px $form-input-outline-color-focus;
+    outline: none;
+
+    &[readonly] {
+      background: $form-input-background-readonly-focus;
+      border-color: $form-input-border-color;
+      box-shadow: none;
+    }
+  }
+
+
+  &--description {
+    width: 100%;
+  }
+
+  &--textarea {
+    width: 100%;
+    resize: vertical;
+  }
+
+  &__label {
+    margin-right: 5px;
+
+    &--ml10 {
+      margin-left: 10px;
+    }
+  }
+
+  &--date {
+    width: 72px;
+  }
+}

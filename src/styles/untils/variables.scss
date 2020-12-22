@@ -1,0 +1,45 @@
+$general-font: -apple-system, BlinkMacSystemFont, "Segoe UI",
+Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+"Helvetica Neue", sans-serif;
+
+$button-color: #444444;
+$button-color-hover: #ffffff;
+$button-border-color: #707070;
+$button-background-color: #ffffff;
+$button-background-color-hover: #a2a2a2;
+
+$form-background-color: #ffffff;
+$form-border-color: #e4e4e4;
+$form-box-shadow-color: rgba(0, 0, 0, 0.1);
+$form-checkbox-color: #000000;
+$border-checkbox-color-hover: #6298d1;
+$border-checkbox-color-active: rgba(0, 0, 0, 0.3);
+$border-radio-color: #444444;
+
+$table-border-color: #eeeeee;
+$table-playground-bg: $table-border-color;
+$table-row-background-color-hover: rgba(38,139,210,.1);
+$table-time-color: #ffffff;
+$table-time-border-color: #5687bb;
+$table-time-background-color: #6298d1;
+$table-passed-color: #ffffff;
+$table-passed-background-color: #00c4a7;
+$table-recorded-color: #444444;
+$table-recorded-background-color: #ffe33b;
+$table-expired-color: #ffffff;
+$table-expired-background-color: #c40000;
+$table-cancelled-color: #ffffff;
+$table-cancelled-background-color: #707070;
+$table-unavailable-background-color: #d0d4d8;
+
+$form-input-color: #444444;
+$form-input-border-color: #d6d6d6;
+$form-input-border-color-hover: #6298d1;
+$form-input-border-color-focus: #1f79d7;
+$form-input-outline-color-focus: rgba(98, 152, 209, 0.3);
+$form-input-background-readonly: #fafafa;
+$form-input-background-readonly-hover: #fafafa;
+$form-input-background-readonly-focus: #fafafa;
+
+$form-select-border-color: #d6d6d6;
+$form-select-border-color-arrow: #707070;

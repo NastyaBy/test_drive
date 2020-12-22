@@ -1,0 +1,95 @@
+@import '../untils/variables';
+
+.table-wrapper {
+  overflow: auto;
+}
+
+.table {
+  display: none;
+  border-collapse: collapse;
+
+  &__row {
+    &:hover {
+      background: $table-row-background-color-hover;
+    }
+  }
+
+  &__cell {
+    padding: 5px;
+    min-width: 73px;
+    text-align: center;
+    border: 1px solid $table-border-color;
+
+    &--playground {
+      min-width: 200px;
+      font-weight: 500;
+      text-align: start;
+      font-size: 17px;
+      background: $table-playground-bg;
+    }
+
+    &--auto {
+      max-width: 250px;
+      min-width: 250px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      text-align: start;
+
+
+    }
+
+    &--time {
+      color: $table-time-color;
+      background: $table-time-background-color;
+      border-color: $table-time-border-color;
+    }
+
+    &--passed {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $table-passed-color;
+      background: $table-passed-background-color;
+    }
+
+    &--cancelled {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $table-cancelled-color;
+      background: $table-cancelled-background-color;
+    }
+
+    &--unavailable {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background: $table-unavailable-background-color;
+    }
+
+    &--recorded {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $table-recorded-color;
+      background: $table-recorded-background-color;
+    }
+
+    &--expired {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $table-expired-color;
+      background: $table-expired-background-color;
+    }
+
+    &--checkbox {
+      min-width: 20px;
+    }
+  }
+}
+
+.showTable {
+  display: table;
+}

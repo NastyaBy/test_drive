@@ -1,0 +1,46 @@
+@import '../untils/variables';
+
+.logbook {
+  display: grid;
+  grid-template-columns: 300px 2fr 465px;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  background: #fbfbfb;
+
+  &__filter {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  &__calendar {
+    grid-column: 2/4;
+    grid-row: 1/2;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 850px;
+    margin: 10px;
+  }
+
+  &__table {
+    grid-column: 1/4;
+    grid-row: 2/3;
+    position: relative;
+    z-index: 1;
+    margin: 10px;
+  }
+
+  &__info {
+    grid-column: 3/4;
+    grid-row: 1/3;
+    position: relative;
+    z-index: 2;
+    display: none;
+
+    &--show {
+      display: flex;
+    }
+  }
+}
