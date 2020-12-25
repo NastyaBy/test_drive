@@ -1,5 +1,6 @@
 import { timeIntervals } from './constants'
 import { timepicker } from './timepicker'
+import * as server from "./server";
 
 export function openLogbookInfo(evt) {
   const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -49,8 +50,19 @@ export function openLogbookInfo(evt) {
     }
   })
 
+
   const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
   const playground = document.querySelector('.js-playground')
+  const renderPlayground = document.querySelector('.js-renderPlayground')
+
+ const playgroudList = server.STATIC_DATE.departmentSandCars.Departments
+
+  playgroudList.forEach((playground) => {
+    const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`
+
+    renderPlayground.innerHTML += html
+  })
+
 
   const changeShroud = () => {
     if (purposeOfTrip.value !== 'Move') {

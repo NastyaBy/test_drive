@@ -105,6 +105,6 @@ export function showFilter() {
   if (isDev) {
     return initFilter(server.STATIC_DATE.departmentSandCars)
   } else {
-    return server.load(initFilter, onLoadFilterError)
+    return server.loadDepartmentCars(initFilter, onLoadFilterError)
   }
 }

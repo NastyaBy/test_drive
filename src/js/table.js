@@ -28,10 +28,10 @@ const initTable = (response) => {
                                     ${intervals
                                       .map(
                                         (time) =>
-                                          `<td class="table__cell js-tableCell"
+                                          `<td class="table__cell js-tableCell" 
                                                data-car-id=${car['ID']}
                                                data-car-time=${time}
-                                               data-car-td=${car['UF_TEST_DRIVE']}>
+                                               data-car-td=${car['UF_TEST_DRIVE']}
                                            </td>`
                                       )
                                       .join('')}
@@ -73,10 +73,11 @@ const onLoadTableError = () => {
   window.body.appendChild(errorElement)
 }
 
-export function showTable() {
+export function showTable(logbookCars) {
+  console.info({logbookCars})
   if (isDev) {
     return initTable(server.STATIC_DATE.departmentSandCars)
   } else {
-    return server.load(initTable, onLoadTableError)
+    return server.loadDepartmentCars(initTable, onLoadTableError)
   }
 }

@@ -46,7 +46,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
 
-  devtool: 'source-map',
+  //devtool: 'source-map',
   performance: {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000

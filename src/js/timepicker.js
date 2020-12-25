@@ -1,52 +1,48 @@
-export function timepicker () {
-  const inputTimepicker = document.querySelectorAll('.js-openTimepicker')
-  const openTimepickerClass = 'fieldset__dropdown--show'
-  const openBlackoutTimepicker = 'fieldset__blackout--show'
+import {initRangeDatePicker} from './datepicker.js'
+import {initRangeDatePickerOnOff} from './datepicker.js'
 
-  inputTimepicker.forEach((trigger) => {
-    const dropdown = trigger.nextElementSibling
-    const selectTime = dropdown.querySelector('.js-timeTimepicker')
-    const inputDate = dropdown.querySelector('.js-dateTimepicker')
-    const blackoutTimepicker = dropdown.nextElementSibling
+export function timepicker() {
+    const inputTimepicker = document.querySelectorAll('.js-openTimepicker')
+    const openTimepickerClass = 'fieldset__dropdown--show'
+    const openBlackoutTimepicker = 'fieldset__blackout--show'
 
-    const rangeDatePicker = new Lightpick({
-      field: document.getElementById('onDatePicker'),
-      onSelect: function(date){
-        document.getElementById('result-1').innerHTML = date.format('DD.MM.YYYY');
-      }
-    });
+    const rangePiker = initRangeDatePickerOnOff('onDatePicker', 'offDatePicker')
 
-    trigger.addEventListener('click', (evt) => {
-      evt.preventDefault()
-      dropdown.classList.toggle(openTimepickerClass)
-      blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
+    inputTimepicker.forEach((trigger) => {
+        const dropdown = trigger.nextElementSibling
+        const selectTime = dropdown.querySelector('.js-timeTimepicker')
+        const blackoutTimepicker = dropdown.nextElementSibling
+
+        trigger.addEventListener('click', (evt) => {
+            evt.preventDefault()
+            dropdown.classList.toggle(openTimepickerClass)
+            blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
+        })
+
+        selectTime.addEventListener('change', (evt) => {
+            // changeTimePicker(trigger, selectTime.value, startDate.format('DD.MM.YYYY'))
+        })
+
+        blackoutTimepicker.addEventListener('click', () => {
+            dropdown.classList.toggle(openTimepickerClass)
+            blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
+        })
+
+        window.addEventListener('keydown', (evt) => {
+            if (evt.keyCode === 27) {
+                if (dropdown.classList.contains(openTimepickerClass)) {
+                    evt.preventDefault()
+                    dropdown.classList.remove(openTimepickerClass)
+                    blackoutTimepicker.classList.remove(openBlackoutTimepicker)
+                }
+            }
+        })
     })
 
-    selectTime.addEventListener('change', (evt) => {
-      changeTimePicker(trigger, selectTime.value, rangeDatePicker.getDate('dd.mm.yyyy'))
-    })
+    const changeTimePicker = (element, timeStart, dataStart) => {
+        element.value = `${timeStart} - ${dataStart}`
+    }
 
-    inputDate.addEventListener('changeDate', (evt) => {
-      changeTimePicker(trigger, selectTime.value, rangeDatePicker.getDate('dd.mm.yyyy'))
-    })
-
-    blackoutTimepicker.addEventListener('click', () => {
-      dropdown.classList.toggle(openTimepickerClass)
-      blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
-    })
-
-    window.addEventListener('keydown', (evt) => {
-      if (evt.keyCode === 27) {
-        if (dropdown.classList.contains(openTimepickerClass)) {
-          evt.preventDefault()
-          dropdown.classList.remove(openTimepickerClass)
-          blackoutTimepicker.classList.remove(openBlackoutTimepicker)
-        }
-      }
-    })
-  })
-
-  const changeTimePicker = (element, timeStart, dataStart) => {
-    element.value = `${timeStart} - ${dataStart}`
-  }
+    const identityDatePicker = document.getElementById('identityDatePicker')
+    initRangeDatePicker(identityDatePicker)
 }
