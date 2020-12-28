@@ -75,9 +75,5 @@ const onLoadTableError = () => {
 
 export function showTable(logbookCars) {
   console.info({logbookCars})
-  if (isDev) {
-    return initTable(server.STATIC_DATE.departmentSandCars)
-  } else {
-    return server.loadDepartmentCars(initTable, onLoadTableError)
-  }
+  return server.loadDepartmentCars(initTable, onLoadTableError)
 }

@@ -24,7 +24,7 @@ module.exports = {
             options: {
               esModule: true,
               publicPath: (resourcePath, context) => {
-                return path.relative(path.dirname(resourcePath), context) + '/';
+                return path.relative(path.dirname(resourcePath), context) + '/'
               },
             },
           },
@@ -35,8 +35,8 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
-      }
+        use: ['babel-loader'],
+      },
     ],
   },
 
@@ -46,9 +46,9 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
 
-  //devtool: 'source-map',
+  devtool: 'source-map',
   performance: {
     maxEntrypointSize: 512000,
-    maxAssetSize: 512000
-  }
+    maxAssetSize: 512000,
+  },
 }

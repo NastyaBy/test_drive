@@ -102,9 +102,5 @@ const onLoadFilterError = () => {
 }
 
 export function showFilter() {
-  if (isDev) {
-    return initFilter(server.STATIC_DATE.departmentSandCars)
-  } else {
-    return server.loadDepartmentCars(initFilter, onLoadFilterError)
-  }
+  return server.loadDepartmentCars(initFilter, onLoadFilterError)
 }
