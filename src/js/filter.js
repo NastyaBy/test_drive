@@ -1,5 +1,4 @@
 import * as server from './server'
-import { isDev } from './constants'
 
 const initFilter = (response) => {
   const departmentsList = response.Departments
@@ -83,24 +82,6 @@ const initFilter = (response) => {
   activateCheckbox()
 }
 
-const onLoadFilterError = () => {
-  const errorElement = document.createElement(`div`)
-  errorElement.innerText = `Ошибка при попытке загрузки данных`
-  errorElement.style.position = `absolute`
-  errorElement.style.width = `100%`
-  errorElement.style.height = `40px`
-  errorElement.style.textAlign = `center`
-  errorElement.style.backgroundColor = `#ff000021`
-  errorElement.style.borderWidth = `1px`
-  errorElement.style.borderStyle = `solid`
-  errorElement.style.borderColor = `red`
-  errorElement.style.lineHeight = `40px`
-  errorElement.style.top = `100px`
-  errorElement.style.color = `red`
-
-  window.body.appendChild(errorElement)
-}
-
-export function showFilter() {
-  return server.loadDepartmentCars(initFilter, onLoadFilterError)
+export function showFilter(logbookCars) {
+  return initFilter(logbookCars)
 }

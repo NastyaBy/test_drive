@@ -477,7 +477,7 @@ const STATIC_DATE = {
       ],
     },
   },
-  dddd: [
+  Date: [
     {
       ID: '1',
       UF_DATE_FROM: '01.11.2020 00:00:00',
@@ -558,7 +558,7 @@ const loadDepartmentCars = (onSuccess, onError) => {
 
 const loadLogbookCars = (onSuccess, onError, date) => {
   if (isDev) {
-    return onSuccess(STATIC_DATE.dddd)
+    return onSuccess(STATIC_DATE.Date)
   } else {
     const xhr = getXhr(onSuccess, onError)
 

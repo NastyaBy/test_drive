@@ -1,5 +1,4 @@
-import * as server from './server'
-import { isDev, timeIntervals } from './constants'
+import { timeIntervals } from './constants'
 import { openLogbookInfo } from './logbook-info'
 
 const initTable = (response) => {
@@ -55,25 +54,6 @@ const initTable = (response) => {
   })
 }
 
-const onLoadTableError = () => {
-  const errorElement = document.createElement(`div`)
-  errorElement.innerText = `Ошибка при попытке загрузки данных`
-  errorElement.style.position = `absolute`
-  errorElement.style.width = `100%`
-  errorElement.style.height = `40px`
-  errorElement.style.textAlign = `center`
-  errorElement.style.backgroundColor = `#ff000021`
-  errorElement.style.borderWidth = `1px`
-  errorElement.style.borderStyle = `solid`
-  errorElement.style.borderColor = `red`
-  errorElement.style.lineHeight = `40px`
-  errorElement.style.top = `100px`
-  errorElement.style.color = `red`
-
-  window.body.appendChild(errorElement)
-}
-
 export function showTable(logbookCars) {
-  console.info({logbookCars})
-  return server.loadDepartmentCars(initTable, onLoadTableError)
+  return initTable(logbookCars)
 }

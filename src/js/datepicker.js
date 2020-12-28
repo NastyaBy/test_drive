@@ -16,16 +16,15 @@ const GeneralDatePicker = new Lightpick({
   startDate: prevMonth.format('DD.MM.YYYY'),
   onSelect: function (start) {
     const date = start.format('DD.MM.YYYY')
-
     server.loadLogbookCars(onLoadLogbookCarsSuccess, onLoadLogbookCarsError, date)
     console.info(start.format('DD.MM.YYYY'))
   },
 })
 
 const onLoadLogbookCarsSuccess = (response) => {
-  showTable(response)
+  console.info(response)
+  // showTable(response)
 }
-
 const onLoadLogbookCarsError = () => {
   console.info(`Ошибка загрузки 'Logbook Cars'`)
 }
