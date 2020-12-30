@@ -1,6 +1,6 @@
 import { timeIntervals } from './constants'
 import { timepicker } from './timepicker'
-import * as server from "./server";
+import { departmentCarsList } from './server'
 
 export function openLogbookInfo(evt) {
   const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -13,7 +13,6 @@ export function openLogbookInfo(evt) {
 
   evt.preventDefault()
   logbookInfo.classList.add(show)
-
 
   timepicker()
 
@@ -36,7 +35,6 @@ export function openLogbookInfo(evt) {
   autoTest.value = evt.target.dataset.carTd
   // onTimeTest.value = evt.target.dataset.catTime
 
-
   closeLogbookInfo.addEventListener('click', () => {
     logbookInfo.classList.remove(show)
   })
@@ -50,19 +48,17 @@ export function openLogbookInfo(evt) {
     }
   })
 
-
   const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
   const playground = document.querySelector('.js-playground')
   const renderPlayground = document.querySelector('.js-renderPlayground')
 
- const playgroundList = server.STATIC_DATA.departmentSandCars.Departments
+  const playgroundList = departmentCarsList.Departments
 
   playgroundList.forEach((playground) => {
     const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`
 
     renderPlayground.innerHTML += html
   })
-
 
   const changeShroud = () => {
     if (purposeOfTrip.value !== 'Move') {
