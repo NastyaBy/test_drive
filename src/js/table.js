@@ -1,10 +1,11 @@
 import { timeIntervals } from './constants'
 import { openLogbookInfo } from './logbook-info'
 
-const initTable = (response) => {
-  const departmentsList = response.Departments
-  const carsList = response.Cars
+const initTable = (departmentCars, logbookCars) => {
+  const departmentsList = departmentCars.Departments
+  const carsList = departmentCars.Cars
   const intervals = timeIntervals
+  console.info({departmentCars}, {logbookCars})
 
   const tableBox = document.querySelector('.js-logbookTable')
 
@@ -54,6 +55,4 @@ const initTable = (response) => {
   })
 }
 
-export function showTable(logbookCars) {
-  return initTable(logbookCars)
-}
+export { initTable }

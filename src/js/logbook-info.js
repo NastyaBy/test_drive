@@ -55,9 +55,9 @@ export function openLogbookInfo(evt) {
   const playground = document.querySelector('.js-playground')
   const renderPlayground = document.querySelector('.js-renderPlayground')
 
- const playgroudList = server.STATIC_DATE.departmentSandCars.Departments
+ const playgroundList = server.STATIC_DATA.departmentSandCars.Departments
 
-  playgroudList.forEach((playground) => {
+  playgroundList.forEach((playground) => {
     const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`
 
     renderPlayground.innerHTML += html

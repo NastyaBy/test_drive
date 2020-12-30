@@ -1,5 +1,3 @@
-import * as server from './server'
-
 const initFilter = (response) => {
   const departmentsList = response.Departments
   const filterBox = document.querySelector('.js-filterBox')
@@ -82,6 +80,4 @@ const initFilter = (response) => {
   activateCheckbox()
 }
 
-export function showFilter(logbookCars) {
-  return initFilter(logbookCars)
-}
+export { initFilter }

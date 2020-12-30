@@ -1,14 +1,9 @@
 import './styles/styles.scss'
 
-import * as server from './js/server'
-import { showFilter } from './js/filter.js'
-import { GeneralDatePicker } from './js/datepicker.js'
+import { getDepartmentCarsList, departmentCarsList } from './js/server'
+import { initGeneralDatePicker } from './js/datepicker'
+import { initFilter } from './js/filter'
 
-const onLoadDepartmentCarsSuccess = (response) => {
-  showFilter(response)
-}
-const onLoadDepartmentCarsError = () => {
-  console.info(`Ошибка загрузки 'Department Cars'`)
-}
-
-server.loadDepartmentCars(onLoadDepartmentCarsSuccess, onLoadDepartmentCarsError)
+initGeneralDatePicker()
+getDepartmentCarsList()
+initFilter(departmentCarsList)

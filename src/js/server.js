@@ -1,6 +1,6 @@
 import { isDev } from './constants'
 
-const STATIC_DATE = {
+const STATIC_DATA = {
   departmentSandCars: {
     Departments: [
       ['1888', 'FORD \u0411\u043e\u0440\u043e\u0432\u0430\u044f', null],
@@ -477,7 +477,7 @@ const STATIC_DATE = {
       ],
     },
   },
-  Date: [
+  logbookSandCars: [
     {
       ID: '1',
       UF_DATE_FROM: '01.11.2020 00:00:00',
@@ -531,7 +531,7 @@ const getXhr = (onSuccess, onError) => {
         break
 
       default:
-        error = `Cтатус ответа: : ` + xhr.status + ` ` + xhr.statusText
+        error = `Статус ответа: : ` + xhr.status + ` ` + xhr.statusText
     }
 
     if (error) {
@@ -545,9 +545,10 @@ const getXhr = (onSuccess, onError) => {
   return xhr
 }
 
+let departmentCarsList = null
 const loadDepartmentCars = (onSuccess, onError) => {
   if (isDev) {
-    return onSuccess(STATIC_DATE.departmentSandCars)
+    return onSuccess(STATIC_DATA.departmentSandCars)
   } else {
     const xhr = getXhr(onSuccess, onError)
 
@@ -555,10 +556,18 @@ const loadDepartmentCars = (onSuccess, onError) => {
     xhr.send()
   }
 }
+const onLoadDepartmentCarsSuccess = (response) => {
+  departmentCarsList = response
+}
+const onLoadDepartmentCarsError = () => {
+  console.info(`Ошибка загрузки 'Department Cars'`)
+}
+const getDepartmentCarsList = () => loadDepartmentCars(onLoadDepartmentCarsSuccess, onLoadDepartmentCarsError)
 
+let logbookCarsList = null
 const loadLogbookCars = (onSuccess, onError, date) => {
   if (isDev) {
-    return onSuccess(STATIC_DATE.Date)
+    return onSuccess(STATIC_DATA.logbookSandCars)
   } else {
     const xhr = getXhr(onSuccess, onError)
 
@@ -566,6 +575,13 @@ const loadLogbookCars = (onSuccess, onError, date) => {
     xhr.send()
   }
 }
+const onLoadLogbookCarsSuccess = (response) => {
+  logbookCarsList = response
+}
+const onLoadLogbookCarsError = () => {
+  console.info(`Ошибка загрузки 'Logbook Cars'`)
+}
+const getLogbookCarsList = (date) => loadLogbookCars(onLoadLogbookCarsSuccess, onLoadLogbookCarsError, date)
 
 // const save = (onSuccess, onError, data) => {
 //     const xhr = getXhr(onSuccess, onError)
@@ -574,4 +590,4 @@ const loadLogbookCars = (onSuccess, onError, date) => {
 //     xhr.send(data)
 // }
 
-export { STATIC_DATE, loadDepartmentCars, loadLogbookCars }
+export { STATIC_DATA, getDepartmentCarsList, departmentCarsList, getLogbookCarsList, logbookCarsList }
