@@ -5,7 +5,6 @@ const initTable = (departmentCars, logbookCars) => {
   const departmentsList = departmentCars.Departments
   const carsList = departmentCars.Cars
   const intervals = timeIntervals
-  console.info({departmentCars}, {logbookCars})
 
   const tableBox = document.querySelector('.js-logbookTable')
 

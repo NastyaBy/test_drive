@@ -62,7 +62,6 @@ const initFilter = (response) => {
           }
 
           getCheckedCheckBoxes()
-
           showDepartmentsTable(getCheckedCheckBoxes())
         },
         false
@@ -78,6 +77,7 @@ const initFilter = (response) => {
   }
 
   activateCheckbox()
+  showDepartmentsTable(getCheckedCheckBoxes())
 }
 
 export { initFilter }

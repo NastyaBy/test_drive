@@ -1,12 +1,19 @@
 import * as Lightpick from 'Lightpick'
 import dayjs from 'dayjs'
 import { initTable } from './table'
-import { getLogbookCarsList, departmentCarsList, logbookCarsList } from './server'
+import { getLogbookCarsList, logbookCarsList } from './server'
 
 const prevMonth = dayjs().date(1).subtract(1, 'month')
 const nextMonth = dayjs().date(31).add(1, 'month')
 
-const initGeneralDatePicker = () => {
+const initGeneralDatePicker = (departmentsList) => {
+  const getTableInfo = (date) => {
+    getLogbookCarsList(date)
+    initTable(departmentsList, logbookCarsList)
+  }
+
+  getTableInfo(prevMonth.format('DD.MM.YYYY'))
+
   return new Lightpick({
     field: document.getElementById('generalDatePicker'),
     format: 'DD.MM.YYYY',
@@ -17,8 +24,7 @@ const initGeneralDatePicker = () => {
     startDate: prevMonth.format('DD.MM.YYYY'),
     onSelect: function (date) {
       const selectedDate = date.format('DD.MM.YYYY')
-      getLogbookCarsList(selectedDate)
-      initTable(departmentCarsList, logbookCarsList)
+      getTableInfo(selectedDate)
     },
   })
 }

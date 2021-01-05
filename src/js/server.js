@@ -546,42 +546,39 @@ const getXhr = (onSuccess, onError) => {
 }
 
 let departmentCarsList = null
-const loadDepartmentCars = (onSuccess, onError) => {
+const getDepartmentCarsList = () => {
+  const onLoadDepartmentCarsSuccess = (response) => {
+    departmentCarsList = response
+  }
+
   if (isDev) {
-    return onSuccess(STATIC_DATA.departmentSandCars)
+    return onLoadDepartmentCarsSuccess(STATIC_DATA.departmentSandCars)
   } else {
-    const xhr = getXhr(onSuccess, onError)
+    const xhr = getXhr(onLoadDepartmentCarsSuccess, onLoadError(`Ошибка загрузки 'Department Cars'`))
 
     xhr.open(`GET`, UrlData.DEPARTMENT_CARS)
     xhr.send()
   }
 }
-const onLoadDepartmentCarsSuccess = (response) => {
-  departmentCarsList = response
-}
-const onLoadDepartmentCarsError = () => {
-  console.info(`Ошибка загрузки 'Department Cars'`)
-}
-const getDepartmentCarsList = () => loadDepartmentCars(onLoadDepartmentCarsSuccess, onLoadDepartmentCarsError)
 
 let logbookCarsList = null
-const loadLogbookCars = (onSuccess, onError, date) => {
+const getLogbookCarsList = (date) => {
+  const onLoadLogbookCarsSuccess = (response) => {
+    logbookCarsList = response
+  }
+
   if (isDev) {
-    return onSuccess(STATIC_DATA.logbookSandCars)
+    return onLoadLogbookCarsSuccess(STATIC_DATA.logbookSandCars)
   } else {
-    const xhr = getXhr(onSuccess, onError)
+    const xhr = getXhr(onLoadLogbookCarsSuccess, onLoadError(`Ошибка загрузки 'Logbook Cars'`))
 
     xhr.open(`GET`, `${UrlData.LOGBOOK_CARS}?date=${date}`)
     xhr.send()
   }
 }
-const onLoadLogbookCarsSuccess = (response) => {
-  logbookCarsList = response
+const onLoadError = (message) => {
+  console.info(message)
 }
-const onLoadLogbookCarsError = () => {
-  console.info(`Ошибка загрузки 'Logbook Cars'`)
-}
-const getLogbookCarsList = (date) => loadLogbookCars(onLoadLogbookCarsSuccess, onLoadLogbookCarsError, date)
 
 // const save = (onSuccess, onError, data) => {
 //     const xhr = getXhr(onSuccess, onError)
