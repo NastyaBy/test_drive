@@ -549,15 +549,19 @@ let departmentCarsList = null
 const getDepartmentCarsList = () => {
   const onLoadDepartmentCarsSuccess = (response) => {
     departmentCarsList = response
+
+    return departmentCarsList
   }
 
-  if (isDev) {
+  if (isDev && departmentCarsList === null) {
     return onLoadDepartmentCarsSuccess(STATIC_DATA.departmentSandCars)
-  } else {
+  } else if (!isDev && departmentCarsList === null) {
     const xhr = getXhr(onLoadDepartmentCarsSuccess, onLoadError(`Ошибка загрузки 'Department Cars'`))
 
     xhr.open(`GET`, UrlData.DEPARTMENT_CARS)
     xhr.send()
+  } else {
+    return departmentCarsList
   }
 }
 
@@ -565,15 +569,19 @@ let logbookCarsList = null
 const getLogbookCarsList = (date) => {
   const onLoadLogbookCarsSuccess = (response) => {
     logbookCarsList = response
+
+    return logbookCarsList
   }
 
-  if (isDev) {
+  if (isDev && logbookCarsList === null) {
     return onLoadLogbookCarsSuccess(STATIC_DATA.logbookSandCars)
-  } else {
+  } else if (!isDev && logbookCarsList === null) {
     const xhr = getXhr(onLoadLogbookCarsSuccess, onLoadError(`Ошибка загрузки 'Logbook Cars'`))
 
     xhr.open(`GET`, `${UrlData.LOGBOOK_CARS}?date=${date}`)
     xhr.send()
+  } else {
+    return logbookCarsList
   }
 }
 const onLoadError = (message) => {
@@ -587,4 +595,4 @@ const onLoadError = (message) => {
 //     xhr.send(data)
 // }
 
-export { STATIC_DATA, getDepartmentCarsList, departmentCarsList, getLogbookCarsList, logbookCarsList }
+export { STATIC_DATA, getDepartmentCarsList, getLogbookCarsList }

@@ -1,6 +1,6 @@
 import { timeIntervals } from './constants'
 import { timepicker } from './timepicker'
-import { departmentCarsList } from './server'
+import { getDepartmentCarsList } from './server'
 
 export function openLogbookInfo(evt) {
   const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -14,7 +14,8 @@ export function openLogbookInfo(evt) {
   evt.preventDefault()
   logbookInfo.classList.add(show)
 
-  timepicker()
+  const logbookInfoTimepicker = timepicker()
+  logbookInfoTimepicker.init()
 
   const autoTest = logbookInfo.querySelector('.js-autoTest')
   const onTimeTest = logbookInfo.querySelector('.js-timeOn')
@@ -44,6 +45,7 @@ export function openLogbookInfo(evt) {
       if (logbookInfo.classList.contains(show)) {
         evt.preventDefault()
         logbookInfo.classList.remove(show)
+        logbookInfoTimepicker.destroy()
       }
     }
   })
@@ -52,7 +54,7 @@ export function openLogbookInfo(evt) {
   const playground = document.querySelector('.js-playground')
   const renderPlayground = document.querySelector('.js-renderPlayground')
 
-  const playgroundList = departmentCarsList.Departments
+  const playgroundList = getDepartmentCarsList().Departments
 
   playgroundList.forEach((playground) => {
     const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`

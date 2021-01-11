@@ -1,7 +1,7 @@
 import * as Lightpick from 'Lightpick'
 import dayjs from 'dayjs'
 import { initTable } from './table'
-import { getLogbookCarsList, logbookCarsList } from './server'
+import { getLogbookCarsList } from './server'
 
 const prevMonth = dayjs().date(1).subtract(1, 'month')
 const nextMonth = dayjs().date(31).add(1, 'month')
@@ -9,7 +9,7 @@ const nextMonth = dayjs().date(31).add(1, 'month')
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
     getLogbookCarsList(date)
-    initTable(departmentsList, logbookCarsList)
+    initTable(departmentsList, getLogbookCarsList())
   }
 
   return new Lightpick({

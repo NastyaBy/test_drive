@@ -37,6 +37,10 @@ export function timepicker() {
       blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
     })
 
+    const changeTimePicker = (element, timeStart, dataStart) => {
+      element.value = `${timeStart} - ${dataStart}`
+    }
+
     window.addEventListener('keydown', (evt) => {
       if (evt.keyCode === 27) {
         if (dropdown.classList.contains(openTimepickerClass)) {
@@ -46,12 +50,15 @@ export function timepicker() {
         }
       }
     })
-
-    const changeTimePicker = (element, timeStart, dataStart) => {
-      element.value = `${timeStart} - ${dataStart}`
-    }
   }
 
-  initDropdown('.js-timepickerInputOn')
-  initDropdown('.js-timepickerInputOff')
+  return {
+    init: function () {
+      initDropdown('.js-timepickerInputOn')
+      initDropdown('.js-timepickerInputOff')
+    },
+    destroy: function () {
+      console.info('destroy')
+    },
+  }
 }
