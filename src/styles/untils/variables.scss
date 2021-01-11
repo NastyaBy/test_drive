@@ -1,6 +1,5 @@
-$general-font: -apple-system, BlinkMacSystemFont, "Segoe UI",
-Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-"Helvetica Neue", sans-serif;
+$general-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+  sans-serif;
 
 $button-color: #444444;
 $button-color-hover: #ffffff;
@@ -18,7 +17,7 @@ $border-radio-color: #444444;
 
 $table-border-color: #eeeeee;
 $table-playground-bg: $table-border-color;
-$table-row-background-color-hover: rgba(38,139,210,.1);
+$table-row-background-color-hover: rgba(38, 139, 210, 0.1);
 $table-time-color: #ffffff;
 $table-time-border-color: #5687bb;
 $table-time-background-color: #6298d1;
@@ -43,3 +42,6 @@ $form-input-background-readonly-focus: #fafafa;
 
 $form-select-border-color: #d6d6d6;
 $form-select-border-color-arrow: #707070;
+
+$logbook-bg: #fbfbfb;
+$logbook-loader-color: #6298d1;

@@ -1555,15 +1555,17 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/styles.scss */ "./src/styles/styles.scss");
 /* harmony import */ var _js_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./js/server */ "./src/js/server.js");
-/* harmony import */ var _js_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/datepicker */ "./src/js/datepicker.js");
-/* harmony import */ var _js_filter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/filter */ "./src/js/filter.js");
+/* harmony import */ var _js_filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/filter */ "./src/js/filter.js");
+/* harmony import */ var _js_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/datepicker */ "./src/js/datepicker.js");
 
 
 
 
-(0,_js_datepicker__WEBPACK_IMPORTED_MODULE_2__.initGeneralDatePicker)();
 (0,_js_server__WEBPACK_IMPORTED_MODULE_1__.getDepartmentCarsList)();
-(0,_js_filter__WEBPACK_IMPORTED_MODULE_3__.initFilter)(_js_server__WEBPACK_IMPORTED_MODULE_1__.departmentCarsList);
+window.setTimeout(function () {
+  (0,_js_filter__WEBPACK_IMPORTED_MODULE_2__.initFilter)(_js_server__WEBPACK_IMPORTED_MODULE_1__.departmentCarsList);
+  (0,_js_datepicker__WEBPACK_IMPORTED_MODULE_3__.initGeneralDatePicker)(_js_server__WEBPACK_IMPORTED_MODULE_1__.departmentCarsList);
+}, 2000);
 
 /***/ }),
 
@@ -1609,7 +1611,13 @@ __webpack_require__.r(__webpack_exports__);
 var prevMonth = dayjs__WEBPACK_IMPORTED_MODULE_1___default()().date(1).subtract(1, 'month');
 var nextMonth = dayjs__WEBPACK_IMPORTED_MODULE_1___default()().date(31).add(1, 'month');
 
-var initGeneralDatePicker = function initGeneralDatePicker() {
+var initGeneralDatePicker = function initGeneralDatePicker(departmentsList) {
+  var getTableInfo = function getTableInfo(date) {
+    (0,_server__WEBPACK_IMPORTED_MODULE_3__.getLogbookCarsList)(date);
+    (0,_table__WEBPACK_IMPORTED_MODULE_2__.initTable)(departmentsList, _server__WEBPACK_IMPORTED_MODULE_3__.logbookCarsList);
+  };
+
+  getTableInfo(prevMonth.format('DD.MM.YYYY'));
   return new Lightpick__WEBPACK_IMPORTED_MODULE_0__({
     field: document.getElementById('generalDatePicker'),
     format: 'DD.MM.YYYY',
@@ -1620,8 +1628,7 @@ var initGeneralDatePicker = function initGeneralDatePicker() {
     startDate: prevMonth.format('DD.MM.YYYY'),
     onSelect: function onSelect(date) {
       var selectedDate = date.format('DD.MM.YYYY');
-      (0,_server__WEBPACK_IMPORTED_MODULE_3__.getLogbookCarsList)(selectedDate);
-      (0,_table__WEBPACK_IMPORTED_MODULE_2__.initTable)(_server__WEBPACK_IMPORTED_MODULE_3__.departmentCarsList, _server__WEBPACK_IMPORTED_MODULE_3__.logbookCarsList);
+      getTableInfo(selectedDate);
     }
   });
 };
@@ -1719,6 +1726,7 @@ var initFilter = function initFilter(response) {
   };
 
   activateCheckbox();
+  showDepartmentsTable(getCheckedCheckBoxes());
 };
 
 
@@ -2246,50 +2254,38 @@ var getXhr = function getXhr(onSuccess, onError) {
 
 var departmentCarsList = null;
 
-var loadDepartmentCars = function loadDepartmentCars(onSuccess, onError) {
+var getDepartmentCarsList = function getDepartmentCarsList() {
+  var onLoadDepartmentCarsSuccess = function onLoadDepartmentCarsSuccess(response) {
+    departmentCarsList = response;
+  };
+
   if (_constants__WEBPACK_IMPORTED_MODULE_0__.isDev) {
-    return onSuccess(STATIC_DATA.departmentSandCars);
+    return onLoadDepartmentCarsSuccess(STATIC_DATA.departmentSandCars);
   } else {
-    var xhr = getXhr(onSuccess, onError);
+    var xhr = getXhr(onLoadDepartmentCarsSuccess, onLoadError("\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 'Department Cars'"));
     xhr.open("GET", UrlData.DEPARTMENT_CARS);
     xhr.send();
   }
 };
 
-var onLoadDepartmentCarsSuccess = function onLoadDepartmentCarsSuccess(response) {
-  departmentCarsList = response;
-};
-
-var onLoadDepartmentCarsError = function onLoadDepartmentCarsError() {
-  console.info("\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 'Department Cars'");
-};
-
-var getDepartmentCarsList = function getDepartmentCarsList() {
-  return loadDepartmentCars(onLoadDepartmentCarsSuccess, onLoadDepartmentCarsError);
-};
-
 var logbookCarsList = null;
 
-var loadLogbookCars = function loadLogbookCars(onSuccess, onError, date) {
+var getLogbookCarsList = function getLogbookCarsList(date) {
+  var onLoadLogbookCarsSuccess = function onLoadLogbookCarsSuccess(response) {
+    logbookCarsList = response;
+  };
+
   if (_constants__WEBPACK_IMPORTED_MODULE_0__.isDev) {
-    return onSuccess(STATIC_DATA.logbookSandCars);
+    return onLoadLogbookCarsSuccess(STATIC_DATA.logbookSandCars);
   } else {
-    var xhr = getXhr(onSuccess, onError);
+    var xhr = getXhr(onLoadLogbookCarsSuccess, onLoadError("\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 'Logbook Cars'"));
     xhr.open("GET", "".concat(UrlData.LOGBOOK_CARS, "?date=").concat(date));
     xhr.send();
   }
 };
 
-var onLoadLogbookCarsSuccess = function onLoadLogbookCarsSuccess(response) {
-  logbookCarsList = response;
-};
-
-var onLoadLogbookCarsError = function onLoadLogbookCarsError() {
-  console.info("\u041E\u0448\u0438\u0431\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 'Logbook Cars'");
-};
-
-var getLogbookCarsList = function getLogbookCarsList(date) {
-  return loadLogbookCars(onLoadLogbookCarsSuccess, onLoadLogbookCarsError, date);
+var onLoadError = function onLoadError(message) {
+  console.info(message);
 }; // const save = (onSuccess, onError, data) => {
 //     const xhr = getXhr(onSuccess, onError)
 //
@@ -2322,11 +2318,6 @@ var initTable = function initTable(departmentCars, logbookCars) {
   var departmentsList = departmentCars.Departments;
   var carsList = departmentCars.Cars;
   var intervals = _constants__WEBPACK_IMPORTED_MODULE_0__.timeIntervals;
-  console.info({
-    departmentCars: departmentCars
-  }, {
-    logbookCars: logbookCars
-  });
   var tableBox = document.querySelector('.js-logbookTable');
   departmentsList.forEach(function (item) {
     var cars = carsList[item[0]];

@@ -5,11 +5,19 @@
   grid-template-columns: 300px 2fr 465px;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  background: #fbfbfb;
+  background: $logbook-bg;
+
+  &--loading {
+    $logbook--loading: & !global;
+  }
 
   &__filter {
     grid-column: 1/2;
     grid-row: 1/2;
+
+    #{$logbook--loading} & {
+      visibility: hidden;
+    }
   }
 
   &__calendar {
@@ -22,6 +30,10 @@
     justify-content: center;
     min-width: 850px;
     margin: 10px;
+
+    #{$logbook--loading} & {
+      visibility: hidden;
+    }
   }
 
   &__table {
@@ -30,6 +42,10 @@
     position: relative;
     z-index: 1;
     margin: 10px;
+
+    #{$logbook--loading} & {
+      visibility: hidden;
+    }
   }
 
   &__info {
@@ -42,5 +58,50 @@
     &--show {
       display: flex;
     }
+  }
+
+  &__loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    #{$logbook--loading} & {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    span {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      background-color: $logbook-loader-color;
+      margin: 35px 5px;
+      opacity: 0;
+
+      &:nth-child(1) {
+        animation: opacityChange 1s ease-in-out infinite;
+      }
+
+      &:nth-child(2) {
+        animation: opacityChange 1s ease-in-out 0.33s infinite;
+      }
+
+      &:nth-child(3) {
+        animation: opacityChange 1s ease-in-out 0.66s infinite;
+      }
+    }
+  }
+}
+
+@keyframes opacityChange {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
   }
 }

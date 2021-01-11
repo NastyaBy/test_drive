@@ -5,5 +5,11 @@ import { initFilter } from './js/filter'
 import { initGeneralDatePicker } from './js/datepicker'
 
 getDepartmentCarsList()
-initFilter(departmentCarsList)
-initGeneralDatePicker(departmentCarsList)
+
+const logbook = document.querySelector('.js-logbook')
+
+window.setTimeout(() => {
+  initFilter(departmentCarsList)
+  initGeneralDatePicker(departmentCarsList)
+  logbook.classList.remove(`logbook--loading`)
+}, 2000)

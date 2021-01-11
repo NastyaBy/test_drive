@@ -12,8 +12,6 @@ const initGeneralDatePicker = (departmentsList) => {
     initTable(departmentsList, logbookCarsList)
   }
 
-  getTableInfo(prevMonth.format('DD.MM.YYYY'))
-
   return new Lightpick({
     field: document.getElementById('generalDatePicker'),
     format: 'DD.MM.YYYY',
@@ -22,6 +20,11 @@ const initGeneralDatePicker = (departmentsList) => {
     numberOfColumns: 3,
     numberOfMonths: 3,
     startDate: prevMonth.format('DD.MM.YYYY'),
+    onOpen: function () {
+      const currentDate = dayjs().format('DD.MM.YYYY')
+      this.setDate(currentDate)
+      getTableInfo(currentDate)
+    },
     onSelect: function (date) {
       const selectedDate = date.format('DD.MM.YYYY')
       getTableInfo(selectedDate)
