@@ -11,8 +11,9 @@ const initTable = (departmentCars, logbookCars) => {
 
   const Status = {
     PASSED: 'Пройден',
-    CANCELLED: 'Отменен',
-    RECORDER: 'Записан',
+    CANCELLED: 'Отменён',
+    RECORDER: 'Запланирован',
+    EXPIRED: 'Просрочен',
   }
 
   departmentsList.forEach((item) => {
@@ -52,7 +53,7 @@ const initTable = (departmentCars, logbookCars) => {
 
   const getCellColor = (evt, autoStatus) => {
     autoStatus.value = evt.target.dataset.carTd
-    if (autoStatus.value === Status.CANCELLED) {
+    if (car['UF_STATUS'].value === Status.CANCELLED) {
       autoStatus.classList.add('table__cell--cancelled')
       autoStatus.textContent = 'Отменен'
     }
@@ -63,6 +64,10 @@ const initTable = (departmentCars, logbookCars) => {
     if (autoStatus.value === Status.PASSED) {
       autoStatus.classList.add('table__cell--passed')
       autoStatus.textContent = 'Пройден'
+    }
+    if (autoStatus.value === Status.EXPIRED) {
+      autoStatus.classList.add('table__cell--expired')
+      autoStatus.textContent = 'Просрочен'
     }
   }
 
