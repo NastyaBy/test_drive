@@ -2,7 +2,10 @@ import { initRangeDatePicker } from './datepicker.js'
 
 export function timepicker() {
   const identityDatePicker = document.getElementById('identityDatePicker')
-  const identityDatePickerCalendar = new initRangeDatePicker(identityDatePicker)
+
+  let identityDatePickerCalendar
+  let rangePikerCalendar = []
+  let rangePikerCalendarItem = 0
 
   const initDropdown = (inputTimepickerClass) => {
     const input = document.querySelector(`${inputTimepickerClass}`)
@@ -11,30 +14,30 @@ export function timepicker() {
     const rangePiker = dropdown.querySelector('.js-dateTimepicker')
     const blackoutTimepicker = dropdown.nextElementSibling
 
-    const openTimepickerClass = 'fieldset__dropdown--show'
-    const openBlackoutTimepicker = 'fieldset__blackout--show'
+    const TIMEPICKER_CLASS_OPEN = 'fieldset__dropdown--show'
+    const TIMEPICKER_BLACKOUT_CLASS_OPEN = 'fieldset__blackout--show'
 
-    const rangePikerCalendar = new initRangeDatePicker(rangePiker)
+    rangePikerCalendar.push(new initRangeDatePicker(rangePiker))
 
     input.addEventListener('click', (evt) => {
       evt.preventDefault()
-      dropdown.classList.toggle(openTimepickerClass)
-      blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
+      dropdown.classList.toggle(TIMEPICKER_CLASS_OPEN)
+      blackoutTimepicker.classList.toggle(TIMEPICKER_BLACKOUT_CLASS_OPEN)
     })
 
     selectTime.addEventListener('change', (evt) => {
-      changeTimePicker(input, selectTime.value, rangePikerCalendar.toString('DD.MM.YYYY'))
+      changeTimePicker(input, selectTime.value, rangePikerCalendar[rangePikerCalendarItem].toString('DD.MM.YYYY'))
     })
 
-    rangePikerCalendar.reloadOptions({
+    rangePikerCalendar[rangePikerCalendarItem].reloadOptions({
       onSelect: function (date) {
         changeTimePicker(input, selectTime.value, date.format('DD.MM.YYYY'))
       },
     })
 
     blackoutTimepicker.addEventListener('click', () => {
-      dropdown.classList.toggle(openTimepickerClass)
-      blackoutTimepicker.classList.toggle(openBlackoutTimepicker)
+      dropdown.classList.toggle(TIMEPICKER_CLASS_OPEN)
+      blackoutTimepicker.classList.toggle(TIMEPICKER_BLACKOUT_CLASS_OPEN)
     })
 
     const changeTimePicker = (element, timeStart, dataStart) => {
@@ -43,22 +46,36 @@ export function timepicker() {
 
     window.addEventListener('keydown', (evt) => {
       if (evt.keyCode === 27) {
-        if (dropdown.classList.contains(openTimepickerClass)) {
+        if (dropdown.classList.contains(TIMEPICKER_CLASS_OPEN)) {
           evt.preventDefault()
-          dropdown.classList.remove(openTimepickerClass)
-          blackoutTimepicker.classList.remove(openBlackoutTimepicker)
+          dropdown.classList.remove(TIMEPICKER_CLASS_OPEN)
+          blackoutTimepicker.classList.remove(TIMEPICKER_BLACKOUT_CLASS_OPEN)
         }
       }
     })
+
+    rangePikerCalendarItem++
   }
 
   return {
     init: function () {
+      identityDatePickerCalendar = new initRangeDatePicker(identityDatePicker)
       initDropdown('.js-timepickerInputOn')
       initDropdown('.js-timepickerInputOff')
     },
     destroy: function () {
-      console.info('destroy')
+      console.info('!')
+
+      if (!!identityDatePickerCalendar) identityDatePickerCalendar.destroy()
+
+      if (rangePikerCalendar && rangePikerCalendar.length) {
+        rangePikerCalendar.forEach((element) => {
+          element.destroy()
+        })
+      }
+
+      console.info({ identityDatePickerCalendar })
+      console.info({ rangePikerCalendar })
     },
   }
 }

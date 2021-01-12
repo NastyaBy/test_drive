@@ -1,25 +1,31 @@
 import { timeIntervals } from './constants'
 import { timepicker } from './timepicker'
 import { getDepartmentCarsList } from './server'
+import { initRangeDatePicker } from './datepicker'
+
+const logbookInfo = document.querySelector('.js-logbookInfo')
+const closeLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
+const LOGBOOKINFO_CLASS_SHOW = 'logbook__info--show'
+
+const autoTest = logbookInfo.querySelector('.js-autoTest')
+const onTimeTest = logbookInfo.querySelector('.js-timeOn')
+const offTimeTest = logbookInfo.querySelector('.js-timeOff')
+
+let logbookInfoTimepicker
 
 export function openLogbookInfo(evt) {
-  const logbookInfo = document.querySelector('.js-logbookInfo')
-  const closeLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
-  const show = 'logbook__info--show'
-
   console.log(evt.target.dataset.carId)
   console.log(evt.target.dataset.carTime)
   console.log(evt.target.dataset.carTd)
 
-  evt.preventDefault()
-  logbookInfo.classList.add(show)
+  logbookInfo.classList.add(LOGBOOKINFO_CLASS_SHOW)
 
-  const logbookInfoTimepicker = timepicker()
-  logbookInfoTimepicker.init()
-
-  const autoTest = logbookInfo.querySelector('.js-autoTest')
-  const onTimeTest = logbookInfo.querySelector('.js-timeOn')
-  const offTimeTest = logbookInfo.querySelector('.js-timeOff')
+  logbookInfoTimepicker = []
+  logbookInfoTimepicker.push(new timepicker())
+  logbookInfoTimepicker.forEach((element) => {
+    element.destroy()
+    element.init()
+  })
 
   timeIntervals.forEach((time) => {
     const html = `<option class="form-select__optional" value="${time}">${time}</option>`
@@ -35,20 +41,6 @@ export function openLogbookInfo(evt) {
 
   autoTest.value = evt.target.dataset.carTd
   // onTimeTest.value = evt.target.dataset.catTime
-
-  closeLogbookInfo.addEventListener('click', () => {
-    logbookInfo.classList.remove(show)
-  })
-
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      if (logbookInfo.classList.contains(show)) {
-        evt.preventDefault()
-        logbookInfo.classList.remove(show)
-        logbookInfoTimepicker.destroy()
-      }
-    }
-  })
 
   const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
   const playground = document.querySelector('.js-playground')
@@ -73,5 +65,30 @@ export function openLogbookInfo(evt) {
 
   purposeOfTrip.addEventListener('change', () => {
     changeShroud()
+  })
+
+  closeLogbookInfo.addEventListener('click', () => {
+    logbookInfoTimepicker.forEach((element) => {
+      element.destroy()
+    })
+    logbookInfoTimepicker = []
+    logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
+  })
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      console.info(logbookInfo.classList.value)
+
+      if (logbookInfo.classList.contains(LOGBOOKINFO_CLASS_SHOW)) {
+        console.info(logbookInfo.classList.value)
+        evt.preventDefault()
+
+        logbookInfoTimepicker.forEach((element) => {
+          element.destroy()
+        })
+        logbookInfoTimepicker = []
+        logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
+      }
+    }
   })
 }

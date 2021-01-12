@@ -46,10 +46,10 @@ const initTable = (departmentCars, logbookCars) => {
   tableCell.forEach((item) => {
     item.addEventListener(
       'click',
-      (event) => {
-        openLogbookInfo(event)
+      (evt) => {
+        openLogbookInfo(evt)
       },
-      true
+      false
     )
   })
 }
