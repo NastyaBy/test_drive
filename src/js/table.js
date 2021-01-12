@@ -7,14 +7,6 @@ const initTable = (departmentCars, logbookCars) => {
   const intervals = timeIntervals
 
   const tableBox = document.querySelector('.js-logbookTable')
-  const autoStatus = document.querySelector('.table__cell')
-
-  const Status = {
-    PASSED: 'Пройден',
-    CANCELLED: 'Отменён',
-    RECORDER: 'Запланирован',
-    EXPIRED: 'Просрочен',
-  }
 
   departmentsList.forEach((item) => {
     const cars = carsList[item[0]]
@@ -38,7 +30,6 @@ const initTable = (departmentCars, logbookCars) => {
                                           `<td class="table__cell js-tableCell" 
                                                data-car-id=${car['ID']}
                                                data-car-time=${time}
-                                               data-car-status=${car['UF_STATUS']}
                                                data-car-td=${car['UF_TEST_DRIVE']}
                                            </td>`
                                       )
@@ -50,26 +41,6 @@ const initTable = (departmentCars, logbookCars) => {
 
     tableBox.innerHTML += html
   })
-
-  const getCellColor = (evt, autoStatus) => {
-    autoStatus.value = evt.target.dataset.carTd
-    if (car['UF_STATUS'].value === Status.CANCELLED) {
-      autoStatus.classList.add('table__cell--cancelled')
-      autoStatus.textContent = 'Отменен'
-    }
-    if (autoStatus.value === Status.RECORDER) {
-      autoStatus.classList.add('table__cell--recorded')
-      autoStatus.textContent = 'Записан'
-    }
-    if (autoStatus.value === Status.PASSED) {
-      autoStatus.classList.add('table__cell--passed')
-      autoStatus.textContent = 'Пройден'
-    }
-    if (autoStatus.value === Status.EXPIRED) {
-      autoStatus.classList.add('table__cell--expired')
-      autoStatus.textContent = 'Просрочен'
-    }
-  }
 
   const tableCell = document.querySelectorAll('.js-tableCell')
   tableCell.forEach((item) => {
