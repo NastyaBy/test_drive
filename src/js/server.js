@@ -483,7 +483,7 @@ const STATIC_DATA = {
       UF_DATE_FROM: '01.11.2020 00:00:00',
       UF_DATE_TO: '31.01.2021 23:59:00',
       UF_TYPE: '\u0422\u0435\u0441\u0442-\u0434\u0440\u0430\u0439\u0432',
-      UF_STATUS: null,
+      UF_STATUS: 'Отменен',
       UF_CAR_ID: '577',
     },
     {
@@ -491,7 +491,7 @@ const STATIC_DATA = {
       UF_DATE_FROM: '23.12.2020 12:30:00',
       UF_DATE_TO: '31.12.2020 12:30:00',
       UF_TYPE: '\u041f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435',
-      UF_STATUS: null,
+      UF_STATUS: 'Отменен',
       UF_CAR_ID: '584',
     },
   ],

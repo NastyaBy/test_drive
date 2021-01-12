@@ -17,6 +17,7 @@ export function openLogbookInfo(evt) {
   console.log(evt.target.dataset.carId)
   console.log(evt.target.dataset.carTime)
   console.log(evt.target.dataset.carTd)
+  console.log(evt.target.dataset.carStatus)
 
   logbookInfo.classList.add(LOGBOOKINFO_CLASS_SHOW)
 
