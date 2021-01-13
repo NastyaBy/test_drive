@@ -10,6 +10,20 @@ const initTable = (departmentCars, logbookCars) => {
 
   departmentsList.forEach((item) => {
     const cars = carsList[item[0]]
+    let itemDepartmentCarsIds = []
+
+    console.info(`%c ${item[0]}`, 'color: red', '\n', { cars }, '\n', { logbookCars }, '\n')
+
+    cars.forEach((itemCar) => {
+      itemDepartmentCarsIds.push(itemCar.ID)
+    })
+    logbookCars.forEach((itemLogbookCars) => {
+      const found = itemDepartmentCarsIds.some((carId) => itemLogbookCars.UF_CAR_ID.includes(carId))
+
+      if (found) console.info(`${itemLogbookCars.UF_CAR_ID} -> %c${found}`, `color: #bada55`)
+    })
+
+    console.info('______________________')
 
     const html = `<table class="table js-table" id="department-${item[0]}">
                          <tr class="table__row">

@@ -23,7 +23,6 @@ const initGeneralDatePicker = (departmentsList) => {
     onOpen: function () {
       const currentDate = dayjs().format('DD.MM.YYYY')
       this.setDate(currentDate)
-      getTableInfo(currentDate)
     },
     onSelect: function (date) {
       const selectedDate = date.format('DD.MM.YYYY')
