@@ -9,7 +9,7 @@ const nextMonth = dayjs().date(31).add(1, 'month')
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
     getLogbookCarsList(date)
-    initTable(departmentsList, getLogbookCarsList())
+    initTable(departmentsList, getLogbookCarsList(), date)
   }
 
   return new Lightpick({
