@@ -14,7 +14,7 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
     const cars = carsList[item[0]]
     let itemDepartmentCarsIds = []
 
-    console.info(`%c ${item[0]}`, 'color: red', '\n', { cars }, '\n', { logbookCars }, '\n')
+    // console.info(`%c ${item[0]}`, 'color: red', '\n', { cars }, '\n', { logbookCars }, '\n')
 
     cars.forEach((itemCar) => {
       itemDepartmentCarsIds.push(itemCar.ID)
@@ -36,6 +36,28 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
         const dateOff = itemLogbookCars.UF_DATE_TO.split(/\s* \s*/)
 
         console.log(`${status} c ${itemLogbookCars.UF_DATE_FROM} по ${itemLogbookCars.UF_DATE_TO}`)
+
+        if (selectedDate > dateOn[0]) {
+          console.log('календарная дата меньше даты начала')
+          const timeOn = '9:00'
+        } else if (selectedDate === dateOn[0]) {
+          console.log('календарная дата равно дате начала')
+          const timeOn = dateOn[1]
+        } else if (selectedDate < dateOn[0]) {
+          console.log('Ошибка даты, календарная дата не может быть дата меньше даты начала')
+        }
+
+        if (selectedDate > dateOff[0]) {
+          console.log('Ошибка даты, календарная дата не может быть больше дате оканчание')
+        } else if (selectedDate === dateOff[0]) {
+          console.log('календарная дата равно дате оканчание')
+          const timeOff = dateOff[1]
+        } else if (selectedDate < dateOff[0]) {
+          console.log('календарная дата меньше дате оканчание')
+          const timeOff = '18:00'
+        }
+
+        // функция которв будет окрашивать в зависемости от статуса
 
         // const autoStatus = document.querySelector('.table__cell')
 
@@ -79,7 +101,7 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
                                           `<td class="table__cell js-tableCell" 
                                                data-car-id=${car['ID']}
                                                data-car-time=${time}
-                                               data-car-td=${car['UF_TEST_DRIVE']}
+                                               data-car-td=${car['UF_TEST_DRIVE']}>
                                            </td>`
                                       )
                                       .join('')}
@@ -90,6 +112,8 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
 
     tableBox.innerHTML += html
   })
+
+  // функция которвя будет перебирать время и находить нужные ячейки
 
   const tableCell = document.querySelectorAll('.js-tableCell')
   tableCell.forEach((item) => {
