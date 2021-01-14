@@ -1,3 +1,24 @@
+const getCheckedCheckBoxes = () => {
+  const selectedCheckBoxes = document.querySelectorAll('.js-checkbox:checked')
+  return Array.from(selectedCheckBoxes).map((cb) => cb.value)
+}
+
+const showDepartmentsTable = () => {
+  const item = getCheckedCheckBoxes()
+
+  const allTables = document.querySelectorAll(`.js-table`)
+  allTables.forEach((item) => {
+    if (item.classList.contains('showTable')) {
+      item.classList.remove('showTable')
+    }
+  })
+
+  item.forEach((item) => {
+    const table = document.querySelector(`#department-${item}`)
+    if (table) table.classList.add('showTable')
+  })
+}
+
 const initFilter = (response) => {
   const departmentsList = response.Departments
   const filterBox = document.querySelector('.js-filterBox')
@@ -12,25 +33,6 @@ const initFilter = (response) => {
                               <label class="form-checkbox__text" for="department-${i}">${item[1]}</label>
                             </div>`
   })
-
-  const getCheckedCheckBoxes = () => {
-    const selectedCheckBoxes = document.querySelectorAll('.js-checkbox:checked')
-    return Array.from(selectedCheckBoxes).map((cb) => cb.value)
-  }
-
-  const showDepartmentsTable = (item) => {
-    const allTables = document.querySelectorAll(`.js-table`)
-    allTables.forEach((item) => {
-      if (item.classList.contains('showTable')) {
-        item.classList.remove('showTable')
-      }
-    })
-
-    item.forEach((item) => {
-      const table = document.querySelector(`#department-${item}`)
-      if (table) table.classList.add('showTable')
-    })
-  }
 
   const activateCheckbox = () => {
     const checkboxes = document.querySelectorAll('.js-checkbox-group')
@@ -62,7 +64,7 @@ const initFilter = (response) => {
           }
 
           getCheckedCheckBoxes()
-          showDepartmentsTable(getCheckedCheckBoxes())
+          showDepartmentsTable()
         },
         false
       )
@@ -77,7 +79,7 @@ const initFilter = (response) => {
   }
 
   activateCheckbox()
-  showDepartmentsTable(getCheckedCheckBoxes())
+  showDepartmentsTable()
 }
 
-export { initFilter }
+export { initFilter, showDepartmentsTable }

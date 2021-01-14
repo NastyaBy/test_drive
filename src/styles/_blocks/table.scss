@@ -20,26 +20,30 @@
     text-align: center;
     border: 1px solid $table-border-color;
 
+    &-text {
+      pointer-events: none;
+    }
+
     &--playground {
-      min-width: 200px;
+      max-width: 300px;
+      min-width: 300px;
       font-weight: 500;
       text-align: start;
       font-size: 17px;
       background: $table-playground-bg;
     }
 
-    &--auto {
-      max-width: 250px;
-      min-width: 250px;
+    &--car-title {
+      max-width: 300px;
+      min-width: 300px;
       white-space: nowrap;
-      overflow:hidden;
+      overflow: hidden;
       text-overflow: ellipsis;
       text-align: start;
 
-      &:hover{
+      &:hover {
         overflow: visible;
       }
-
     }
 
     &--time {
@@ -54,6 +58,7 @@
       text-transform: uppercase;
       color: $table-passed-color;
       background: $table-passed-background-color;
+      border-color: $table-passed-background-color;
     }
 
     &--cancelled {
@@ -62,6 +67,7 @@
       text-transform: uppercase;
       color: $table-cancelled-color;
       background: $table-cancelled-background-color;
+      border-color: $table-cancelled-background-color;
     }
 
     &--unavailable {
@@ -69,6 +75,7 @@
       font-weight: bold;
       text-transform: uppercase;
       background: $table-unavailable-background-color;
+      border-color: $table-unavailable-background-color;
     }
 
     &--recorded {
@@ -77,6 +84,7 @@
       text-transform: uppercase;
       color: $table-recorded-color;
       background: $table-recorded-background-color;
+      border-color: $table-recorded-background-color;
     }
 
     &--expired {
@@ -85,6 +93,7 @@
       text-transform: uppercase;
       color: $table-expired-color;
       background: $table-expired-background-color;
+      border-color: $table-expired-background-color;
     }
 
     &--checkbox {
