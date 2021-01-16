@@ -1,33 +1,27 @@
-import { timeIntervals } from './constants'
+import moment from 'moment'
 import { showDepartmentsTable } from './filter'
 import { openLogbookInfo } from './logbook-info'
 
-const intervals = timeIntervals
+const minTime = '9:00'
+const maxTime = '18:00'
+const step = { minutes: 30 }
 
-const renderTableRow = (car, logbookCars, selectedDate) => {
-  const logbookCar = logbookCars.find((logbookCar) => logbookCar['UF_CAR_ID'] === car.ID)
-  const carStatus = logbookCar ? logbookCar.UF_STATUS : null
-  const carBookedDateFrom = logbookCar ? logbookCar.UF_DATE_FROM : null
-  const carBookedDateTo = logbookCar ? logbookCar.UF_DATE_TO : null
+const renderTableRow = (car, logbookCar, tdFormat = 'HH:mm', startMoment, endMoment, departmentTitle) => {
+  const tr = document.createElement('tr')
+  tr.className = 'table__row'
 
-  const dayPeriod = logbookCar ? `с ${carBookedDateFrom.slice(11, -3)} по ${carBookedDateTo.slice(11, -3)}` : ''
-
-  if (isCarBooked(car, logbookCars)) {
-    console.info(`${car['ID']} -> %c BOOKED - ${dayPeriod}`, `color: #bada55`)
+  if (departmentTitle) {
+    tr.appendChild(renderTableCell(departmentTitle, null, 'table__cell--playground'))
   } else {
-    console.info(`${car['ID']} -> %c NOT_BOOKED`, `color: red`)
+    tr.appendChild(renderTableCell(car ? car.LAST_NAME : '' || '', null, 'table__cell--car-title'))
   }
 
-  return `<tr class="table__row">
-              <td class="table__cell table__cell--car-title">${car['LAST_NAME']}</td>
-              ${intervals.map((time) => renderTableCell(car, carStatus, time, selectedDate)).join('')}
-          </tr>`
-}
+  const carStartMoment = logbookCar.UF_DATE_FROM && moment(logbookCar.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
+  const carEndMoment = logbookCar.UF_DATE_TO && moment(logbookCar.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
+  const currentMoment = startMoment.clone()
 
-const renderTableCell = (car, carStatus, time, selectedDate) => {
-  const statusText = carStatus ? carStatus : ''
   let statusClass = ''
-  switch (carStatus) {
+  switch (logbookCar.UF_STATUS) {
     case 'Пройден':
       statusClass = 'table__cell--passed'
       break
@@ -44,21 +38,53 @@ const renderTableCell = (car, carStatus, time, selectedDate) => {
       statusClass = ''
   }
 
-  return `<td class="table__cell ${statusClass} js-tableCell" 
-             data-car-id=${car['ID']}
-             data-car-time=${time}
-             data-car-td=${car['UF_TEST_DRIVE']}>
-             <span class="table__cell-text">${statusText}</span>
-          </td>`
+  let statusColSpan = 0
+  while (currentMoment.isSameOrBefore(endMoment)) {
+    if (currentMoment.isBetween(carStartMoment, carEndMoment, undefined, '[]')) {
+      statusColSpan++
+    } else {
+      if (statusColSpan > 0) {
+        const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, statusClass)
+        tr.appendChild(td)
+        statusColSpan = 0
+      }
+
+      const td = renderTableCell(
+        tdFormat ? currentMoment.format(tdFormat) : '',
+        null,
+        tdFormat ? 'table__cell--time' : ''
+      )
+      tr.appendChild(td)
+    }
+
+    currentMoment.add(step)
+  }
+
+  if (statusColSpan > 0) {
+    const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, statusClass)
+    tr.appendChild(td)
+  }
+
+  return tr
 }
 
-const isCarBooked = (car, logbookCars) => {
-  return logbookCars.some((logbookCar) => logbookCar['UF_CAR_ID'] === car.ID)
+const renderTableCell = (text, colSpan, cellClass) => {
+  const td = document.createElement('td')
+  td.className = `table__cell ${cellClass} js-tableCell`
+
+  td.innerHTML = text
+  if (colSpan) {
+    td.colSpan = colSpan
+  }
+  return td
 }
 
 const initTable = (departmentCars, logbookCars, selectedDate) => {
   const departmentsList = departmentCars.Departments
   const carsList = departmentCars.Cars
+
+  const startMoment = moment(`${selectedDate} ${minTime}`, 'DD.MM.YYYY HH:mm')
+  const endMoment = moment(`${selectedDate} ${maxTime}`, 'DD.MM.YYYY HH:mm')
 
   const tableBox = document.querySelector('.js-logbookTable')
   tableBox.innerHTML = ''
@@ -66,95 +92,29 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
   departmentsList.forEach((item) => {
     const cars = carsList[item[0]]
 
-    // console.info(`%c ${item[0]}`, 'color: red', '\n', { cars }, '\n', { logbookCars }, '\n')
-
-    // logbookCars.forEach((itemLogbookCars) => {
-    //   const found = itemDepartmentCarsIds.some((carId) => itemLogbookCars.UF_CAR_ID.includes(carId))
-    //
-    //   // if (found) console.info(`${itemLogbookCars.UF_CAR_ID} -> %c${found}`, `color: #bada55`)
-    //   if (found) {
-    //     const Status = {
-    //       PASSED: 'Пройден',
-    //       CANCELLED: 'Отменён',
-    //       RECORDER: 'Запланирован',
-    //       EXPIRED: 'Просрочен',
-    //     }
-    //
-    //     const status = itemLogbookCars.UF_STATUS
-    //     const dateOn = itemLogbookCars.UF_DATE_FROM.split(/\s* \s*/)
-    //     const dateOff = itemLogbookCars.UF_DATE_TO.split(/\s* \s*/)
-    //
-    //     console.log(`${status} c ${itemLogbookCars.UF_DATE_FROM} по ${itemLogbookCars.UF_DATE_TO}`)
-    //
-    //     if (selectedDate > dateOn[0]) {
-    //       console.log('календарная дата меньше даты начала')
-    //       const timeOn = '9:00'
-    //     } else if (selectedDate === dateOn[0]) {
-    //       console.log('календарная дата равно дате начала')
-    //       const timeOn = dateOn[1]
-    //     } else if (selectedDate < dateOn[0]) {
-    //       console.log('Ошибка даты, календарная дата не может быть дата меньше даты начала')
-    //     }
-    //
-    //     if (selectedDate > dateOff[0]) {
-    //       console.log('Ошибка даты, календарная дата не может быть больше дате оканчание')
-    //     } else if (selectedDate === dateOff[0]) {
-    //       console.log('календарная дата равно дате оканчание')
-    //       const timeOff = dateOff[1]
-    //     } else if (selectedDate < dateOff[0]) {
-    //       console.log('календарная дата меньше дате оканчание')
-    //       const timeOff = '18:00'
-    //     }
-    //
-    //     // функция которв будет окрашивать в зависемости от статуса
-    //
-    //     // const autoStatus = document.querySelector('.table__cell')
-    //
-    //     // if (status === Status.CANCELLED) {
-    //     //   autoStatus.classList.add('table__cell--cancelled')
-    //     //   autoStatus.textContent = 'Отменен'
-    //     // }
-    //     // if (status === Status.RECORDER) {
-    //     //   autoStatus.classList.add('table__cell--recorded')
-    //     //   autoStatus.textContent = 'Записан'
-    //     // }
-    //     // if (status === Status.PASSED) {
-    //     //   autoStatus.classList.add('table__cell--passed')
-    //     //   autoStatus.textContent = 'Пройден'
-    //     // }
-    //     // if (status === Status.EXPIRED) {
-    //     //   autoStatus.classList.add('table__cell--expired')
-    //     //   autoStatus.textContent = 'Просрочен'
-    //     // }
-    //   }
-    // })
-
     console.info(`-----------------------------------------`, `\n${item[1]} (${selectedDate})\n`)
 
-    const table = `<table class="table js-table" id="department-${item[0]}">
-                         <tr class="table__row">
-                            <td class="table__cell table__cell--playground">${item[1]}</td>
-                            ${intervals
-                              .map((time) => `<td class="table__cell table__cell--time">${time}</td>`)
-                              .join('')}
-                         </tr>
+    const defaultCellData = {
+      UF_STATUS: '',
+      UF_DATE_FROM: Infinity,
+      UF_DATE_TO: Infinity,
+    }
+    const tableHeaderRow = renderTableRow(null, defaultCellData, 'HH:mm', startMoment, endMoment, item[1])
 
-                          ${cars.map((car) => renderTableRow(car, logbookCars, selectedDate)).join('')}
-                       </table>`
+    const table = document.createElement('table')
+    table.className = 'table js-table'
+    table.id = `department-${item[0]}`
+    const tableHeader = table.createTHead()
+    tableHeader.appendChild(tableHeaderRow)
 
-    tableBox.innerHTML += table
-  })
-  // функция которвя будет перебирать время и находить нужные ячейки
+    const tableBody = table.createTBody()
+    cars.forEach((car) => {
+      const logbookCar = logbookCars.find((item) => item['UF_CAR_ID'] === car.ID)
+      const tr = renderTableRow(car, logbookCar ? logbookCar : defaultCellData, null, startMoment, endMoment)
+      tableBody.appendChild(tr)
+    })
 
-  const tableCell = document.querySelectorAll('.js-tableCell')
-  tableCell.forEach((item) => {
-    item.addEventListener(
-      'click',
-      (evt) => {
-        openLogbookInfo(evt)
-      },
-      true
-    )
+    tableBox.appendChild(table)
   })
 
   showDepartmentsTable()

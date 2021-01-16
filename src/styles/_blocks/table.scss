@@ -12,6 +12,10 @@
     &:hover {
       background: $table-row-background-color-hover;
     }
+
+    &--red {
+      background: red;
+    }
   }
 
   &__cell {

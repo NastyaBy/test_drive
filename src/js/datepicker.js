@@ -1,10 +1,10 @@
 import * as Lightpick from 'Lightpick'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import { initTable } from './table'
 import { getLogbookCarsList } from './server'
 
-const prevMonth = dayjs().date(1).subtract(1, 'month')
-const nextMonth = dayjs().date(31).add(1, 'month')
+const prevMonth = moment().date(1).subtract(1, 'month')
+const nextMonth = moment().date(31).add(1, 'month')
 
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
@@ -21,7 +21,7 @@ const initGeneralDatePicker = (departmentsList) => {
     numberOfMonths: 3,
     startDate: prevMonth.format('DD.MM.YYYY'),
     onOpen: function () {
-      const currentDate = dayjs().format('DD.MM.YYYY')
+      const currentDate = moment().format('DD.MM.YYYY')
       this.setDate(currentDate)
     },
     onSelect: function (date) {
