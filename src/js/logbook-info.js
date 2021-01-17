@@ -13,7 +13,7 @@ const offTimeTest = logbookInfo.querySelector('.js-timeOff')
 
 let logbookInfoTimepicker
 
-export function openLogbookInfo(evt) {
+export function openLogbookInfo(evt, playgroundList) {
   console.log(evt.target.dataset.carId)
   console.log(evt.target.dataset.carTime)
   console.log(evt.target.dataset.carTd)
@@ -45,8 +45,6 @@ export function openLogbookInfo(evt) {
   const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
   const playground = document.querySelector('.js-playground')
   const renderPlayground = document.querySelector('.js-renderPlayground')
-
-  const playgroundList = getDepartmentCarsList().Departments
 
   playgroundList.forEach((playground) => {
     const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`

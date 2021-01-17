@@ -2,14 +2,17 @@ import * as Lightpick from 'Lightpick'
 import moment from 'moment'
 import { initTable } from './table'
 import { getLogbookCarsList } from './server'
+import { showDepartmentsTable } from './filter'
 
 const prevMonth = moment().date(1).subtract(1, 'month')
 const nextMonth = moment().date(31).add(1, 'month')
 
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
-    getLogbookCarsList(date)
-    initTable(departmentsList, getLogbookCarsList(date), date)
+    getLogbookCarsList(date).then((data) => {
+      initTable(departmentsList, data, date)
+      showDepartmentsTable()
+    })
   }
 
   return new Lightpick({

@@ -64,8 +64,6 @@ export function timepicker() {
       initDropdown('.js-timepickerInputOff')
     },
     destroy: function () {
-      console.info('!')
-
       if (!!identityDatePickerCalendar) identityDatePickerCalendar.destroy()
 
       if (rangePikerCalendar && rangePikerCalendar.length) {
@@ -73,9 +71,6 @@ export function timepicker() {
           element.destroy()
         })
       }
-
-      console.info({ identityDatePickerCalendar })
-      console.info({ rangePikerCalendar })
     },
   }
 }

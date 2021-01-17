@@ -19,11 +19,11 @@ const showDepartmentsTable = () => {
   })
 }
 
-const initFilter = (response) => {
-  const departmentsList = response.Departments
+const initFilter = (data) => {
+  const departmentsList = data.Departments
   const filterBox = document.querySelector('.js-filterBox')
 
-  departmentsList.forEach((item, i, departmentsList) => {
+  departmentsList.forEach((item, i) => {
     filterBox.innerHTML += `<div class="form-checkbox">
                               <input class="form-checkbox__control js-checkbox"
                                      type="checkbox"
