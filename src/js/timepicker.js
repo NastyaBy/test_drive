@@ -1,12 +1,11 @@
 import { initRangeDatePicker } from './datepicker.js'
 
+const identityDatePicker = document.getElementById('identityDatePicker')
+let identityDatePickerCalendar
+let rangePikerCalendar = []
+let rangePikerCalendarItem = 0
+
 export function timepicker() {
-  const identityDatePicker = document.getElementById('identityDatePicker')
-
-  let identityDatePickerCalendar
-  let rangePikerCalendar = []
-  let rangePikerCalendarItem = 0
-
   const initDropdown = (inputTimepickerClass) => {
     const input = document.querySelector(`${inputTimepickerClass}`)
     const dropdown = input.nextElementSibling
@@ -17,9 +16,12 @@ export function timepicker() {
     const TIMEPICKER_CLASS_OPEN = 'fieldset__dropdown--show'
     const TIMEPICKER_BLACKOUT_CLASS_OPEN = 'fieldset__blackout--show'
 
+    rangePikerCalendar = []
+    rangePikerCalendarItem = 0
     rangePikerCalendar.push(new initRangeDatePicker(rangePiker))
 
     input.addEventListener('click', (evt) => {
+      console.info({ evt })
       evt.preventDefault()
       dropdown.classList.toggle(TIMEPICKER_CLASS_OPEN)
       blackoutTimepicker.classList.toggle(TIMEPICKER_BLACKOUT_CLASS_OPEN)

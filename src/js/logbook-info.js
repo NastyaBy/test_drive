@@ -1,92 +1,111 @@
+import moment from 'moment'
 import { timeIntervals } from './constants'
 import { timepicker } from './timepicker'
-import { getDepartmentCarsList } from './server'
-import { initRangeDatePicker } from './datepicker'
 
+let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
-const closeLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
+const closeBtnLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
 const LOGBOOKINFO_CLASS_SHOW = 'logbook__info--show'
 
-const autoTest = logbookInfo.querySelector('.js-autoTest')
-const onTimeTest = logbookInfo.querySelector('.js-timeOn')
-const offTimeTest = logbookInfo.querySelector('.js-timeOff')
+const testDriveField = logbookInfo.querySelector('.js-testDrive')
+const testDriveTimeFromField = logbookInfo.querySelector('.js-testDriveTimeFrom')
+const testDriveTimeToField = logbookInfo.querySelector('.js-testDriveTimeTo')
 
-let logbookInfoTimepicker
+const clearLogbookInfo = () => {
+  testDriveField.value = ''
+  testDriveTimeFromField.value = ''
+  testDriveTimeToField.value = ''
+}
 
-export function openLogbookInfo(evt, playgroundList) {
-  console.log(evt.target.dataset.carId)
-  console.log(evt.target.dataset.carTime)
-  console.log(evt.target.dataset.carTd)
+const updateLogbookInfo = (data) => {
+  console.info({ data })
 
+  const carInfo = data.car
+  const selectedDate = data.currentMomentFormatted
+  const carLogbookInfo = data.logbookCar
+  const departmentsList = data.departmentsList
+
+  testDriveField.value = carInfo.UF_TEST_DRIVE
+
+  if (!!carLogbookInfo.ID) {
+    testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
+    testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
+
+    console.info(carLogbookInfo.UF_TYPE)
+  } else {
+    testDriveTimeFromField.value = selectedDate
+  }
+}
+
+const closeLogbookInfo = (evt) => {
+  evt.preventDefault()
+  isLogbookInfoShow = false
+  clearLogbookInfo()
+  logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
+  closeBtnLogbookInfo.removeEventListener('click', () => {}, false)
+}
+
+const openLogbookInfo = (evt, data) => {
+  isLogbookInfoShow = true
+  evt.preventDefault()
   logbookInfo.classList.add(LOGBOOKINFO_CLASS_SHOW)
 
-  logbookInfoTimepicker = []
-  logbookInfoTimepicker.push(new timepicker())
-  logbookInfoTimepicker.forEach((element) => {
-    element.destroy()
-    element.init()
-  })
+  clearLogbookInfo()
+  updateLogbookInfo(data)
 
-  timeIntervals.forEach((time) => {
-    const html = `<option class="form-select__optional" value="${time}">${time}</option>`
+  // logbookInfoTimepicker = []
+  // logbookInfoTimepicker.push(new timepicker())
+  // logbookInfoTimepicker.forEach((element) => {
+  //   element.destroy()
+  //   element.init()
+  // })
+  //
+  // timeIntervals.forEach((time) => {
+  //   const html = `<option class="form-select__optional" value="${time}">${time}</option>`
+  //   onTimeTest.innerHTML += html
+  // })
+  //
+  // timeIntervals.forEach((time) => {
+  //   const html = `<option class="form-select__optional" value="${time}">${time}</option>`
+  //   offTimeTest.innerHTML += html
+  // })
+  //
+  // autoTest.value = evt.target.dataset.carTd
+  //
+  // const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
+  // const playground = document.querySelector('.js-playground')
+  //
+  // playgroundList.forEach((item) => {
+  //   const html = `<option class="form-select__optional" value="${item[0]}">${item[1]}</option>`
+  //
+  //   playground.innerHTML += html
+  // })
+  //
+  // const changeShroud = () => {
+  //   if (purposeOfTrip.value !== 'Move') {
+  //     playground.setAttribute('disabled', 'disabled')
+  //   } else {
+  //     playground.removeAttribute('disabled')
+  //   }
+  // }
+  // changeShroud()
+  //
+  // purposeOfTrip.addEventListener('change', () => {
+  //   changeShroud()
+  // })
+  //
 
-    onTimeTest.innerHTML += html
-  })
-
-  timeIntervals.forEach((time) => {
-    const html = `<option class="form-select__optional" value="${time}">${time}</option>`
-
-    offTimeTest.innerHTML += html
-  })
-
-  autoTest.value = evt.target.dataset.carTd
-  // onTimeTest.value = evt.target.dataset.catTime
-
-  const purposeOfTrip = document.querySelector('.js-purposeOfTrip')
-  const playground = document.querySelector('.js-playground')
-  const renderPlayground = document.querySelector('.js-renderPlayground')
-
-  playgroundList.forEach((playground) => {
-    const html = `<option class="form-select__optional" value="${playground[0]}">${playground[1]}</option>`
-
-    renderPlayground.innerHTML += html
-  })
-
-  const changeShroud = () => {
-    if (purposeOfTrip.value !== 'Move') {
-      playground.setAttribute('disabled', 'disabled')
-    } else {
-      playground.removeAttribute('disabled')
+  closeBtnLogbookInfo.addEventListener('click', (evt) => {
+    if (isLogbookInfoShow) {
+      closeLogbookInfo(evt)
     }
-  }
-  changeShroud()
-
-  purposeOfTrip.addEventListener('change', () => {
-    changeShroud()
-  })
-
-  closeLogbookInfo.addEventListener('click', () => {
-    logbookInfoTimepicker.forEach((element) => {
-      element.destroy()
-    })
-    logbookInfoTimepicker = []
-    logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
   })
 
   window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      console.info(logbookInfo.classList.value)
-
-      if (logbookInfo.classList.contains(LOGBOOKINFO_CLASS_SHOW)) {
-        console.info(logbookInfo.classList.value)
-        evt.preventDefault()
-
-        logbookInfoTimepicker.forEach((element) => {
-          element.destroy()
-        })
-        logbookInfoTimepicker = []
-        logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
-      }
+    if (evt.keyCode === 27 && isLogbookInfoShow) {
+      closeLogbookInfo(evt)
     }
   })
 }
+
+export { openLogbookInfo }

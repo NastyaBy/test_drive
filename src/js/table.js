@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { showDepartmentsTable } from './filter'
 import { openLogbookInfo } from './logbook-info'
 
 const minTime = '9:00'
@@ -20,9 +19,9 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
     tr.className = 'table__row'
 
     if (departmentTitle) {
-      tr.appendChild(renderTableCell(departmentTitle, null, 'table__cell--playground'))
+      tr.appendChild(renderTableCell(departmentTitle, null, 'table__cell--playground', null))
     } else {
-      tr.appendChild(renderTableCell(car ? car.LAST_NAME : '' || '', null, 'table__cell--car-title'))
+      tr.appendChild(renderTableCell(car ? car.LAST_NAME : '' || '', null, 'table__cell--car-title', null))
     }
 
     const carStartMoment = logbookCar.UF_DATE_FROM && moment(logbookCar.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
@@ -57,11 +56,13 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
           tr.appendChild(td)
           statusColSpan = 0
         }
+        const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
 
         const td = renderTableCell(
           tdFormat ? currentMoment.format(tdFormat) : '',
           null,
-          tdFormat ? 'table__cell--time' : ''
+          tdFormat ? 'table__cell--time' : '',
+          car && logbookCar ? { car, logbookCar, departmentsList, currentMomentFormatted } : null
         )
         tr.appendChild(td)
       }
@@ -70,17 +71,25 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
     }
 
     if (statusColSpan > 0) {
-      const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, statusClass)
+      const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
+
+      const td = renderTableCell(
+        logbookCar.UF_STATUS,
+        statusColSpan,
+        statusClass,
+        car && logbookCar ? { car, logbookCar, departmentsList, currentMomentFormatted } : null
+      )
       tr.appendChild(td)
     }
 
     return tr
   }
 
-  const renderTableCell = (text, colSpan, cellClass) => {
+  const renderTableCell = (text, colSpan, cellClass, data) => {
     const td = document.createElement('td')
     td.className = `table__cell ${cellClass}`
-    td.addEventListener('click', (evt) => openLogbookInfo(evt, departmentsList))
+
+    if (!!data) td.addEventListener('click', (evt) => openLogbookInfo(evt, data))
 
     td.innerHTML = text
     if (colSpan) {

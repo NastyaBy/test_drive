@@ -9,10 +9,16 @@ const nextMonth = moment().date(31).add(1, 'month')
 
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
-    getLogbookCarsList(date).then((data) => {
-      initTable(departmentsList, data, date)
-      showDepartmentsTable()
-    })
+    const logbook = document.querySelector('.js-logbook')
+    logbook.classList.add(`logbook--loading`)
+    getLogbookCarsList(date)
+      .then((data) => {
+        initTable(departmentsList, data, date)
+        showDepartmentsTable()
+      })
+      .finally(() => {
+        logbook.classList.remove(`logbook--loading`)
+      })
   }
 
   return new Lightpick({
