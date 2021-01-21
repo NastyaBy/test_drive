@@ -72,17 +72,17 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
       tr.appendChild(renderTableCell(car ? car.LAST_NAME : '' || '', null, 'table__cell--car-title', null))
 
       let statusColSpan = 0
+
       logbookCar = logbookCar.length > 0 ? logbookCar[0] : ''
 
       while (currentMoment.isSameOrBefore(tableEndMoment)) {
         const carStartMoment = logbookCar.UF_DATE_FROM && moment(logbookCar.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
         const carEndMoment = logbookCar.UF_DATE_TO && moment(logbookCar.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
+        const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
 
         if (currentMoment.isBetween(carStartMoment, carEndMoment, undefined, '[]')) {
           statusColSpan++
         } else {
-          const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
-
           if (statusColSpan > 0) {
             const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, getStatusClass(logbookCar.UF_STATUS), {
               car,
@@ -94,7 +94,8 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
             statusColSpan = 0
           }
 
-          const td = renderTableCell('', null, '', { car, logbookCar, departmentsList, currentMomentFormatted })
+          const emptyLogbookCar = null
+          const td = renderTableCell('', null, '', { car, emptyLogbookCar, departmentsList, currentMomentFormatted })
           tr.appendChild(td)
         }
 

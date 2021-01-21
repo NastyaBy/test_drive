@@ -137,7 +137,7 @@ const updateLogbookInfo = (data) => {
   testDriveStatus.value = 'Записан'
   testDriveType.value = 'Тест-драйв'
 
-  if (!!carLogbookInfo.ID) {
+  if (!!carLogbookInfo && !!carLogbookInfo.ID) {
     testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
     testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
 
