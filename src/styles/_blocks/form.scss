@@ -4,8 +4,8 @@
   position: sticky;
   top: 0;
   display: flex;
-  flex-wrap: wrap;
-  align-items: self-start;
+  flex-direction: column;
+  flex-wrap: nowrap;
   max-height: 100vh;
   padding: 20px 10px 10px;
   overflow: auto;
@@ -14,6 +14,11 @@
   border-width: 1px 0 1px 1px;
   box-shadow: 0 0 30px $form-box-shadow-color;
   border-radius: 10px 0 0 10px;
+
+  &__row {
+    display: flex;
+    margin-bottom: 20px;
+  }
 
   &__fieldset {
     flex-shrink: 0;

@@ -10,76 +10,108 @@ const defaultCellData = {
   UF_DATE_TO: Infinity,
 }
 
+const getStatusClass = (status) => {
+  switch (status) {
+    case 'Пройден':
+      return 'table__cell--passed'
+    case 'Отменён':
+      return 'table__cell--cancelled'
+    case 'Запланирован':
+      return 'table__cell--recorded'
+    case 'Просрочен':
+      return 'table__cell--expired'
+    default:
+      return ''
+  }
+}
+
 const initTable = (departmentCars, logbookCars, selectedDate) => {
   const departmentsList = departmentCars.Departments
   const carsList = departmentCars.Cars
 
-  const renderTableRow = (car, logbookCar, tdFormat = 'HH:mm', startMoment, endMoment, departmentTitle) => {
+  const tableCurrentDateMoment = moment(selectedDate, 'DD.MM.YYYY')
+  const tableStartMoment = moment(`${selectedDate} ${minTime}`, 'DD.MM.YYYY HH:mm')
+  const tableEndMoment = moment(`${selectedDate} ${maxTime}`, 'DD.MM.YYYY HH:mm')
+
+  const renderTableRow = (car, logbookCar, tdFormat = 'HH:mm', departmentTitle) => {
+    if (!!logbookCar) {
+      let tmpLogbookCar = []
+      logbookCar.map((item) => {
+        if (
+          tableCurrentDateMoment.isBetween(
+            moment(item.UF_DATE_FROM, 'DD.MM.YYYY'),
+            moment(item.UF_DATE_TO, 'DD.MM.YYYY'),
+            undefined,
+            '[]'
+          )
+        ) {
+          tmpLogbookCar.push(item)
+        }
+      })
+
+      logbookCar = tmpLogbookCar
+    } else {
+      logbookCar = [defaultCellData]
+    }
+
+    console.info('----')
+    logbookCar.sort((a, b) => moment(a.UF_DATE_TO, 'DD.MM.YYYY HH:mm') - moment(b.UF_DATE_TO, 'DD.MM.YYYY HH:mm'))
+
     const tr = document.createElement('tr')
     tr.className = 'table__row'
 
-    if (departmentTitle) {
+    const currentMoment = tableStartMoment.clone()
+    if (departmentTitle && tdFormat) {
       tr.appendChild(renderTableCell(departmentTitle, null, 'table__cell--playground', null))
+
+      while (currentMoment.isSameOrBefore(tableEndMoment)) {
+        tr.appendChild(renderTableCell(currentMoment.format(tdFormat), null, 'table__cell--time', null))
+        currentMoment.add(step)
+      }
     } else {
       tr.appendChild(renderTableCell(car ? car.LAST_NAME : '' || '', null, 'table__cell--car-title', null))
-    }
 
-    const carStartMoment = logbookCar.UF_DATE_FROM && moment(logbookCar.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
-    const carEndMoment = logbookCar.UF_DATE_TO && moment(logbookCar.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
-    const currentMoment = startMoment.clone()
+      let statusColSpan = 0
+      logbookCar = logbookCar.length > 0 ? logbookCar[0] : ''
 
-    let statusClass = ''
-    switch (logbookCar.UF_STATUS) {
-      case 'Пройден':
-        statusClass = 'table__cell--passed'
-        break
-      case 'Отменён':
-        statusClass = 'table__cell--cancelled'
-        break
-      case 'Запланирован':
-        statusClass = 'table__cell--recorded'
-        break
-      case 'Просрочен':
-        statusClass = 'table__cell--expired'
-        break
-      default:
-        statusClass = ''
-    }
+      while (currentMoment.isSameOrBefore(tableEndMoment)) {
+        const carStartMoment = logbookCar.UF_DATE_FROM && moment(logbookCar.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
+        const carEndMoment = logbookCar.UF_DATE_TO && moment(logbookCar.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
 
-    let statusColSpan = 0
-    while (currentMoment.isSameOrBefore(endMoment)) {
-      if (currentMoment.isBetween(carStartMoment, carEndMoment, undefined, '[]')) {
-        statusColSpan++
-      } else {
-        if (statusColSpan > 0) {
-          const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, statusClass)
+        if (currentMoment.isBetween(carStartMoment, carEndMoment, undefined, '[]')) {
+          statusColSpan++
+        } else {
+          const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
+
+          if (statusColSpan > 0) {
+            const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, getStatusClass(logbookCar.UF_STATUS), {
+              car,
+              logbookCar,
+              departmentsList,
+              currentMomentFormatted,
+            })
+            tr.appendChild(td)
+            statusColSpan = 0
+          }
+
+          const td = renderTableCell('', null, '', { car, logbookCar, departmentsList, currentMomentFormatted })
           tr.appendChild(td)
-          statusColSpan = 0
         }
-        const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
 
-        const td = renderTableCell(
-          tdFormat ? currentMoment.format(tdFormat) : '',
-          null,
-          tdFormat ? 'table__cell--time' : '',
-          car && logbookCar ? { car, logbookCar, departmentsList, currentMomentFormatted } : null
-        )
-        tr.appendChild(td)
+        currentMoment.add(step)
       }
 
-      currentMoment.add(step)
-    }
+      if (statusColSpan > 0) {
+        const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
 
-    if (statusColSpan > 0) {
-      const currentMomentFormatted = currentMoment.format('DD.MM.YYYY HH:mm')
-
-      const td = renderTableCell(
-        logbookCar.UF_STATUS,
-        statusColSpan,
-        statusClass,
-        car && logbookCar ? { car, logbookCar, departmentsList, currentMomentFormatted } : null
-      )
-      tr.appendChild(td)
+        const td = renderTableCell(logbookCar.UF_STATUS, statusColSpan, getStatusClass(logbookCar.UF_STATUS), {
+          car,
+          logbookCar,
+          departmentsList,
+          currentMomentFormatted,
+        })
+        tr.appendChild(td)
+      }
     }
 
     return tr
@@ -98,9 +130,6 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
     return td
   }
 
-  const startMoment = moment(`${selectedDate} ${minTime}`, 'DD.MM.YYYY HH:mm')
-  const endMoment = moment(`${selectedDate} ${maxTime}`, 'DD.MM.YYYY HH:mm')
-
   const tableBox = document.querySelector('.js-logbookTable')
   tableBox.innerHTML = ''
 
@@ -108,7 +137,7 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
     const cars = carsList[item[0]]
 
     if (cars) {
-      const tableHeaderRow = renderTableRow(null, defaultCellData, 'HH:mm', startMoment, endMoment, item[1])
+      const tableHeaderRow = renderTableRow(null, null, 'HH:mm', item[1])
 
       const table = document.createElement('table')
       table.className = 'table js-table'
@@ -118,8 +147,9 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
 
       const tableBody = table.createTBody()
       cars.forEach((car) => {
-        const logbookCar = logbookCars.find((item) => item['UF_CAR_ID'] === car.ID)
-        const tr = renderTableRow(car, logbookCar ? logbookCar : defaultCellData, null, startMoment, endMoment)
+        const foundedLogbookCar = logbookCars.filter((item) => item['UF_CAR_ID'] === car.ID)
+
+        const tr = renderTableRow(car, foundedLogbookCar ? foundedLogbookCar : null, null, null)
         tableBody.appendChild(tr)
       })
 
