@@ -10,13 +10,24 @@ const DATA_URL = {
 }
 
 const getDepartmentCarsList = async () => {
-  let response = await fetch(`${DATA_URL.DEPARTMENT_CARS}`)
+  const response = await fetch(`${DATA_URL.DEPARTMENT_CARS}`)
   return await response.json()
 }
 
 const getLogbookCarsList = async (date) => {
-  let response = await fetch(`${DATA_URL.LOGBOOK_CARS}?date=${date}`)
+  const response = await fetch(`${DATA_URL.LOGBOOK_CARS}?date=${date}`)
   return await response.json()
 }
 
-export { getDepartmentCarsList, getLogbookCarsList }
+const saveLogbookInfo = async (data = {}) => {
+  const response = await fetch(`${DATA_URL.LOGBOOK_CARS}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  return await response.json()
+}
+
+export { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo }

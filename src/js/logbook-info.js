@@ -1,8 +1,11 @@
 import moment from 'moment'
-import { initRangeDatePicker } from './datepicker'
+import { initGeneralDatePicker, initRangeDatePicker } from './datepicker'
+import { saveLogbookInfo } from './server'
+import { initFilter } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
+const sendBtnLogbookInfo = logbookInfo.querySelector('.js-sendLogbookInfo')
 const closeBtnLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
 const LOGBOOKINFO_CLASS_SHOW = 'logbook__info--show'
 const TIMEPICKER_CLASS_OPEN = 'fieldset__dropdown--show'
@@ -69,7 +72,7 @@ const initTimePicker = (input) => {
         })
 
         if (dateFrom === dateTo) {
-          console.info('!!!')
+          console.info('-')
         }
       }
       // var op = document.getElementById("foo").getElementsByTagName("option");
@@ -126,11 +129,9 @@ const clearLogbookInfo = () => {
 }
 
 const updateLogbookInfo = (data) => {
-  console.info({ data })
-
   const carInfo = data.car
   const selectedDate = data.currentMomentFormatted
-  const carLogbookInfo = data.logbookCar
+  const carLogbookInfo = data.lastLogbookCar
   const departmentsList = data.departmentsList
 
   testDriveField.value = carInfo.UF_TEST_DRIVE
@@ -150,6 +151,9 @@ const updateLogbookInfo = (data) => {
         break
       case 'Запланирован':
         testDriveStatus.value = 'Записан'
+        break
+      case 'Просрочен':
+        testDriveStatus.value = 'Просрочен'
         break
       default:
         testDriveStatus.value = 'Записан'
@@ -220,6 +224,11 @@ const openLogbookInfo = (evt, data) => {
   clearLogbookInfo()
   updateLogbookInfo(data)
 
+  sendBtnLogbookInfo.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    sendForm()
+  })
+
   closeBtnLogbookInfo.addEventListener('click', (evt) => {
     if (isLogbookInfoShow) {
       closeLogbookInfo(evt)
@@ -231,6 +240,39 @@ const openLogbookInfo = (evt, data) => {
       closeLogbookInfo(evt)
     }
   })
+}
+
+const sendForm = () => {
+  const form = logbookInfo.querySelector('.js-logbookForm')
+
+  const data = {
+    UF_TEST_DRIVE: '',
+    UF_CLIENT_NAME: '',
+    UF_CLIENT_PHONE: '',
+    UF_DATE_FROM: '',
+    UF_DATE_TO: '',
+    UF_TYPE: '',
+    UF_DEPARTMENT: '',
+    UF_RUN_BEFORE: '',
+    UF_RUN_AFTER: '',
+    UF_COMMENTARY: '',
+    UF_BY_NUMBER: '',
+    UF_DATE_GIVE: '',
+    UF_STATUS: '',
+    UF_ASSIGNED: '',
+  }
+
+  form.classList.add(`form--loading`)
+  saveLogbookInfo(data)
+    .then((response) => {
+      console.info(response)
+    })
+    .catch((error) => {
+      console.info('error: ' + error)
+    })
+    .finally(() => {
+      form.classList.remove(`form--loading`)
+    })
 }
 
 export { openLogbookInfo }

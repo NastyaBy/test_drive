@@ -15,6 +15,20 @@
   box-shadow: 0 0 30px $form-box-shadow-color;
   border-radius: 10px 0 0 10px;
 
+  &--loading {
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: $form-background-color;
+      opacity: 0.9;
+    }
+  }
+
   &__row {
     display: flex;
     margin-bottom: 20px;

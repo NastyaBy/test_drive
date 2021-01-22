@@ -5,7 +5,6 @@ import { getLogbookCarsList } from './server'
 import { showDepartmentsTable } from './filter'
 
 const prevMonth = moment().date(1).subtract(1, 'month')
-const nextMonth = moment().date(31).add(1, 'month')
 
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
