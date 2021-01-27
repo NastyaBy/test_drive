@@ -112,7 +112,7 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
             statusColSpan = 0
           }
 
-          const emptyLogbookCar = null
+          const emptyLogbookCar = true
           const td = renderTableCell('', null, '', { car, emptyLogbookCar, departmentsList, currentMomentFormatted })
           tr.appendChild(td)
         }
@@ -150,10 +150,20 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
 
   const renderTableCell = (text, colSpan, cellClass, data) => {
     const td = document.createElement('td')
+
+    if (!!data) {
+      td.addEventListener('click', (evt) => openLogbookInfo(evt, data))
+
+      if (!!data.lastLogbookCar && data.lastLogbookCar.UF_TYPE === 'Перемещение') {
+        const departmentName = departmentsList.filter((x) => x[0] === data.lastLogbookCar.UF_DEPARTMENT)
+
+        cellClass = 'table__cell--unavailable'
+        text = `ЗАПИСЬ НЕДОСТУПНА - Авто перемещен на площадку
+         ${departmentName[0][1]} до ${data.lastLogbookCar.UF_DATE_TO.slice(0, -3)}`
+      }
+    }
+
     td.className = `table__cell ${cellClass}`
-
-    if (!!data) td.addEventListener('click', (evt) => openLogbookInfo(evt, data))
-
     td.innerHTML = text
     if (colSpan) {
       td.colSpan = colSpan

@@ -1,7 +1,6 @@
 import moment from 'moment'
-import { initGeneralDatePicker, initRangeDatePicker } from './datepicker'
+import { initRangeDatePicker } from './datepicker'
 import { saveLogbookInfo } from './server'
-import { initFilter } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -128,6 +127,8 @@ const clearLogbookInfo = () => {
   if (!!testDriveTimeDateToCalendar) testDriveTimeDateToCalendar.destroy()
 }
 
+let emptyLogbookInfo = false
+
 const updateLogbookInfo = (data) => {
   const carInfo = data.car
   const selectedDate = data.currentMomentFormatted
@@ -139,6 +140,7 @@ const updateLogbookInfo = (data) => {
   testDriveType.value = 'Тест-драйв'
 
   if (!!carLogbookInfo && !!carLogbookInfo.ID) {
+    emptyLogbookInfo = false
     testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
     testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
 
@@ -166,7 +168,7 @@ const updateLogbookInfo = (data) => {
       case 'Длительный тест-драйв':
         testDriveType.value = 'Длительный тест-драйв'
         break
-      case 'Служебная':
+      case 'Служебный':
         testDriveType.value = 'Служебная'
         break
       case 'Перемещение':
@@ -178,6 +180,7 @@ const updateLogbookInfo = (data) => {
   } else {
     testDriveTimeFromField.value = selectedDate
     testDriveTimeToField.value = moment(selectedDate, 'DD.MM.YYYY HH:mm').add(30, 'minutes').format('DD.MM.YYYY HH:mm')
+    if (data.emptyLogbookCar) emptyLogbookInfo = true
   }
 
   testDriveTimeDateFromCalendar = new initRangeDatePicker(testDriveTimeDateFrom)
@@ -223,24 +226,24 @@ const openLogbookInfo = (evt, data) => {
 
   clearLogbookInfo()
   updateLogbookInfo(data)
-
-  sendBtnLogbookInfo.addEventListener('click', (evt) => {
-    evt.preventDefault()
-    sendForm()
-  })
-
-  closeBtnLogbookInfo.addEventListener('click', (evt) => {
-    if (isLogbookInfoShow) {
-      closeLogbookInfo(evt)
-    }
-  })
-
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27 && isLogbookInfoShow) {
-      closeLogbookInfo(evt)
-    }
-  })
 }
+
+sendBtnLogbookInfo.addEventListener('click', (evt) => {
+  evt.preventDefault()
+  sendForm()
+})
+
+closeBtnLogbookInfo.addEventListener('click', (evt) => {
+  if (isLogbookInfoShow) {
+    closeLogbookInfo(evt)
+  }
+})
+
+window.addEventListener('keydown', (evt) => {
+  if (evt.keyCode === 27 && isLogbookInfoShow) {
+    closeLogbookInfo(evt)
+  }
+})
 
 const sendForm = () => {
   const form = logbookInfo.querySelector('.js-logbookForm')
@@ -263,7 +266,7 @@ const sendForm = () => {
   }
 
   form.classList.add(`form--loading`)
-  saveLogbookInfo(data)
+  saveLogbookInfo(data, emptyLogbookInfo)
     .then((response) => {
       console.info(response)
     })

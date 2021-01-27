@@ -19,9 +19,10 @@ const getLogbookCarsList = async (date) => {
   return await response.json()
 }
 
-const saveLogbookInfo = async (data = {}) => {
+const saveLogbookInfo = async (data = {}, emptyLogbookInfo = false) => {
+  const sendDataMethod = emptyLogbookInfo ? 'POST' : 'PUT'
   const response = await fetch(`${DATA_URL.LOGBOOK_CARS}`, {
-    method: 'POST',
+    method: sendDataMethod,
     headers: {
       'Content-Type': 'application/json',
     },
