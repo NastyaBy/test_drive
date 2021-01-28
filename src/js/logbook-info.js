@@ -1,6 +1,8 @@
 import moment from 'moment'
 import { initRangeDatePicker } from './datepicker'
-import { saveLogbookInfo } from './server'
+import { getLogbookCarsList, saveLogbookInfo } from './server'
+import { initTable } from './table'
+import { showDepartmentsTable } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -307,7 +309,15 @@ const sendForm = () => {
       console.info('error: ' + error)
     })
     .finally(() => {
-      form.classList.remove(`form--loading`)
+      const date = testDriveTimeDateTo.value
+      getLogbookCarsList(date)
+        .then((data) => {
+          initTable(departmentsList, data, date)
+          showDepartmentsTable()
+        })
+        .finally(() => {
+          form.classList.remove(`form--loading`)
+        })
     })
 }
 
