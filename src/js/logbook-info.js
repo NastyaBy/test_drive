@@ -16,6 +16,15 @@ const testDriveTimeFromField = logbookInfo.querySelector('.js-testDriveTimeFrom'
 const testDriveTimeToField = logbookInfo.querySelector('.js-testDriveTimeTo')
 const testDriveStatus = logbookInfo.querySelector('.js-testDriveStatus')
 const testDriveType = logbookInfo.querySelector('.js-testDriveType')
+const testDriveClientName = logbookInfo.querySelector('.js-testDriveClientName')
+const testDriveClientPhone = logbookInfo.querySelector('.js-testDriveClientPhone')
+const testDriveRunBefore = logbookInfo.querySelector('.js-testDriveRunBefore')
+const testDriveRunAfter = logbookInfo.querySelector('.js-testDriveRunAfter')
+const testDriveCommentary = logbookInfo.querySelector('.js-testDriveCommentary')
+const testDriveByNumber = logbookInfo.querySelector('.js-testDriveByNumber')
+const testDriveAssigned = logbookInfo.querySelector('.js-testDriveAssigned')
+const testDriveCarId = logbookInfo.querySelector('.js-testDriveCarId')
+const testDriveId = logbookInfo.querySelector('.js-testDriveId')
 
 const testDriveTimeSelectFrom = logbookInfo.querySelector('.js-testDriveTimeSelectFrom')
 const testDriveTimeDateFrom = logbookInfo.querySelector('.js-testDriveTimeDateFrom')
@@ -121,7 +130,20 @@ const clearLogbookInfo = () => {
   testDriveField.value = ''
   testDriveTimeFromField.value = ''
   testDriveTimeToField.value = ''
+  testDriveType.value = ''
   testDriveIdentityDatePicker.value = ''
+  testDriveCarId.value = ''
+  testDriveClientName.value = ''
+  testDriveClientPhone.value = ''
+  testDriveCommentary.value = ''
+  testDrivePlaygroundSelect.value = ''
+  testDriveRunBefore.value = ''
+  testDriveRunAfter.value = ''
+  testDriveByNumber.value = ''
+  testDriveStatus.value = ''
+  testDriveAssigned.value = ''
+  testDriveId.value = ''
+
   if (!!testDriveIdentityDatePickerCalendar) testDriveIdentityDatePickerCalendar.destroy()
   if (!!testDriveTimeDateFromCalendar) testDriveTimeDateFromCalendar.destroy()
   if (!!testDriveTimeDateToCalendar) testDriveTimeDateToCalendar.destroy()
@@ -136,10 +158,12 @@ const updateLogbookInfo = (data) => {
   const departmentsList = data.departmentsList
 
   testDriveField.value = carInfo.UF_TEST_DRIVE
-  testDriveStatus.value = 'Записан'
+  testDriveStatus.value = 'Запланирован'
   testDriveType.value = 'Тест-драйв'
+  testDriveCarId.value = carInfo.ID
 
   if (!!carLogbookInfo && !!carLogbookInfo.ID) {
+    testDriveId.value = data.lastLogbookCar.ID
     emptyLogbookInfo = false
     testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
     testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
@@ -152,13 +176,13 @@ const updateLogbookInfo = (data) => {
         testDriveStatus.value = 'Отменён'
         break
       case 'Запланирован':
-        testDriveStatus.value = 'Записан'
+        testDriveStatus.value = 'Запланирован'
         break
       case 'Просрочен':
         testDriveStatus.value = 'Просрочен'
         break
       default:
-        testDriveStatus.value = 'Записан'
+        testDriveStatus.value = 'Запланирован'
     }
 
     switch (carLogbookInfo.UF_TYPE) {
@@ -247,26 +271,35 @@ window.addEventListener('keydown', (evt) => {
 
 const sendForm = () => {
   const form = logbookInfo.querySelector('.js-logbookForm')
+  const urlParams = new URLSearchParams(window.location.search)
+  const dealId = urlParams.get('deal_id')
 
   const data = {
-    UF_TEST_DRIVE: '',
-    UF_CLIENT_NAME: '',
-    UF_CLIENT_PHONE: '',
-    UF_DATE_FROM: '',
-    UF_DATE_TO: '',
-    UF_TYPE: '',
-    UF_DEPARTMENT: '',
-    UF_RUN_BEFORE: '',
-    UF_RUN_AFTER: '',
-    UF_COMMENTARY: '',
-    UF_BY_NUMBER: '',
-    UF_DATE_GIVE: '',
-    UF_STATUS: '',
-    UF_ASSIGNED: '',
+    UF_DEAL_ID: dealId,
+    UF_CAR_ID: testDriveCarId.value,
+    UF_TEST_DRIVE: testDriveField.value,
+    UF_CLIENT_NAME: testDriveClientName.value,
+    UF_CLIENT_PHONE: testDriveClientPhone.value,
+    UF_DATE_FROM: testDriveTimeFromField.value,
+    UF_DATE_TO: testDriveTimeToField.value,
+    UF_TYPE: testDriveType.value,
+    UF_DEPARTMENT: testDrivePlaygroundSelect.value,
+    UF_RUN_BEFORE: testDriveRunBefore.value,
+    UF_RUN_AFTER: testDriveRunAfter.value,
+    UF_COMMENTARY: testDriveCommentary.value,
+    UF_BY_NUMBER: testDriveByNumber.value,
+    UF_DATE_GIVE: testDriveIdentityDatePicker.value,
+    UF_STATUS: testDriveStatus.value,
+    UF_ASSIGNED: testDriveAssigned.value,
   }
 
+  if (!emptyLogbookInfo) {
+    data.ID = testDriveId.value
+  }
+  console.log(data)
+
   form.classList.add(`form--loading`)
-  saveLogbookInfo(data, emptyLogbookInfo)
+  saveLogbookInfo(data)
     .then((response) => {
       console.info(response)
     })
