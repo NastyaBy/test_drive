@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { initRangeDatePicker } from './datepicker'
-import { getLogbookCarsList, saveLogbookInfo } from './server'
+import { initGeneralDatePicker, initRangeDatePicker } from './datepicker'
+import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo } from './server'
 import { initTable } from './table'
-import { showDepartmentsTable } from './filter'
+import { initFilter, showDepartmentsTable } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -174,8 +174,8 @@ const updateLogbookInfo = (data) => {
       case 'Пройден':
         testDriveStatus.value = 'Пройден'
         break
-      case 'Отменён':
-        testDriveStatus.value = 'Отменён'
+      case 'Отменен':
+        testDriveStatus.value = 'Отменен'
         break
       case 'Запланирован':
         testDriveStatus.value = 'Запланирован'
@@ -238,7 +238,7 @@ const updateLogbookInfo = (data) => {
 }
 
 const closeLogbookInfo = (evt) => {
-  evt.preventDefault()
+  if (!!evt) evt.preventDefault()
   isLogbookInfoShow = false
   clearLogbookInfo()
   logbookInfo.classList.remove(LOGBOOKINFO_CLASS_SHOW)
@@ -298,7 +298,6 @@ const sendForm = () => {
   if (!emptyLogbookInfo) {
     data.ID = testDriveId.value
   }
-  console.log(data)
 
   form.classList.add(`form--loading`)
   saveLogbookInfo(data)
@@ -309,15 +308,19 @@ const sendForm = () => {
       console.info('error: ' + error)
     })
     .finally(() => {
-      const date = testDriveTimeDateTo.value
-      getLogbookCarsList(date)
-        .then((data) => {
-          initTable(departmentsList, data, date)
-          showDepartmentsTable()
-        })
-        .finally(() => {
-          form.classList.remove(`form--loading`)
-        })
+      getDepartmentCarsList().then((departmentCarsList) => {
+        const date = testDriveTimeDateTo.value
+
+        getLogbookCarsList(date)
+          .then((data) => {
+            initTable(departmentCarsList, data, date)
+            showDepartmentsTable()
+          })
+          .finally(() => {
+            form.classList.remove(`form--loading`)
+            closeLogbookInfo()
+          })
+      })
     })
 }
 

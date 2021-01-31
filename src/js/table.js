@@ -14,7 +14,7 @@ const getStatusClass = (status) => {
   switch (status) {
     case 'Пройден':
       return 'table__cell--passed'
-    case 'Отменён':
+    case 'Отменен':
       return 'table__cell--cancelled'
     case 'Запланирован':
       return 'table__cell--recorded'
