@@ -176,12 +176,24 @@ const updateLogbookInfo = (data) => {
       })
       .finally(() => {
         console.info(currentLogbookData)
-        testDriveId.value = data.lastLogbookCar.ID
+        testDriveId.value = currentLogbookData.ID
         emptyLogbookInfo = false
-        testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
-        testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
+        testDriveCarId.value = currentLogbookData.UF_CAR_ID
+        testDriveClientName.value = currentLogbookData.UF_CLIENT_NAME
+        testDriveClientPhone.value = currentLogbookData.UF_CLIENT_PHONE
+        testDriveTimeFromField.value = moment(currentLogbookData.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
+        testDriveTimeToField.value = moment(currentLogbookData.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
+        testDriveType.value = currentLogbookData.UF_TYPE
+        testDrivePlaygroundSelect.value = currentLogbookData.UF_DEPARTMENT
+        testDriveRunBefore.value = currentLogbookData.UF_RUN_BEFORE
+        testDriveRunAfter.value = currentLogbookData.UF_RUN_AFTER
+        testDriveCommentary.value = currentLogbookData.UF_COMMENTARY
+        testDriveByNumber.value = currentLogbookData.UF_BY_NUMBER
+        testDriveIdentityDatePicker.value = currentLogbookData.UF_DATE_GIVE
+        testDriveStatus.value = currentLogbookData.UF_STATUS
+        testDriveAssigned.value = currentLogbookData.UF_ASSIGNED
 
-        switch (carLogbookInfo.UF_STATUS) {
+        switch (currentLogbookData.UF_STATUS) {
           case 'Пройден':
             testDriveStatus.value = 'Пройден'
             break
@@ -198,7 +210,7 @@ const updateLogbookInfo = (data) => {
             testDriveStatus.value = 'Запланирован'
         }
 
-        switch (carLogbookInfo.UF_TYPE) {
+        switch (currentLogbookData.UF_TYPE) {
           case 'Тест-драйв':
             testDriveType.value = 'Тест-драйв'
             break
