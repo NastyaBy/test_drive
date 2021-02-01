@@ -19,6 +19,11 @@ const getLogbookCarsList = async (date) => {
   return await response.json()
 }
 
+const getLogbookInfo = async (id) => {
+  const response = await fetch(`${DATA_URL.LOGBOOK_CARS}?id=${id}`)
+  return await response.json()
+}
+
 const saveLogbookInfo = async (data = {}) => {
   const response = await fetch(`${DATA_URL.LOGBOOK_CARS}`, {
     method: 'POST',
@@ -30,4 +35,4 @@ const saveLogbookInfo = async (data = {}) => {
   return await response.json()
 }
 
-export { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo }
+export { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo }

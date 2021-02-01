@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { initGeneralDatePicker, initRangeDatePicker } from './datepicker'
-import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo } from './server'
+import { initRangeDatePicker } from './datepicker'
+import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo } from './server'
 import { initTable } from './table'
-import { initFilter, showDepartmentsTable } from './filter'
+import { showDepartmentsTable } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -164,45 +164,57 @@ const updateLogbookInfo = (data) => {
   testDriveType.value = 'Тест-драйв'
   testDriveCarId.value = carInfo.ID
 
+  //проверяем на заполнотость logbookInfo
+
   if (!!carLogbookInfo && !!carLogbookInfo.ID) {
-    testDriveId.value = data.lastLogbookCar.ID
-    emptyLogbookInfo = false
-    testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
-    testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
+    const recordId = data.lastLogbookCar.ID
+    let currentLogbookData = {}
 
-    switch (carLogbookInfo.UF_STATUS) {
-      case 'Пройден':
-        testDriveStatus.value = 'Пройден'
-        break
-      case 'Отменен':
-        testDriveStatus.value = 'Отменен'
-        break
-      case 'Запланирован':
-        testDriveStatus.value = 'Запланирован'
-        break
-      case 'Просрочен':
-        testDriveStatus.value = 'Просрочен'
-        break
-      default:
-        testDriveStatus.value = 'Запланирован'
-    }
+    getLogbookInfo(recordId)
+      .then((data) => {
+        currentLogbookData = data
+      })
+      .finally(() => {
+        console.info(currentLogbookData)
+        testDriveId.value = data.lastLogbookCar.ID
+        emptyLogbookInfo = false
+        testDriveTimeFromField.value = carLogbookInfo.UF_DATE_FROM.slice(0, -3)
+        testDriveTimeToField.value = carLogbookInfo.UF_DATE_TO.slice(0, -3)
 
-    switch (carLogbookInfo.UF_TYPE) {
-      case 'Тест-драйв':
-        testDriveType.value = 'Тест-драйв'
-        break
-      case 'Длительный тест-драйв':
-        testDriveType.value = 'Длительный тест-драйв'
-        break
-      case 'Служебный':
-        testDriveType.value = 'Служебная'
-        break
-      case 'Перемещение':
-        testDriveType.value = 'Перемещение'
-        break
-      default:
-        testDriveType.value = 'Тест-драйв'
-    }
+        switch (carLogbookInfo.UF_STATUS) {
+          case 'Пройден':
+            testDriveStatus.value = 'Пройден'
+            break
+          case 'Отменен':
+            testDriveStatus.value = 'Отменен'
+            break
+          case 'Запланирован':
+            testDriveStatus.value = 'Запланирован'
+            break
+          case 'Просрочен':
+            testDriveStatus.value = 'Просрочен'
+            break
+          default:
+            testDriveStatus.value = 'Запланирован'
+        }
+
+        switch (carLogbookInfo.UF_TYPE) {
+          case 'Тест-драйв':
+            testDriveType.value = 'Тест-драйв'
+            break
+          case 'Длительный тест-драйв':
+            testDriveType.value = 'Длительный тест-драйв'
+            break
+          case 'Служебный':
+            testDriveType.value = 'Служебная'
+            break
+          case 'Перемещение':
+            testDriveType.value = 'Перемещение'
+            break
+          default:
+            testDriveType.value = 'Тест-драйв'
+        }
+      })
   } else {
     testDriveTimeFromField.value = selectedDate
     testDriveTimeToField.value = moment(selectedDate, 'DD.MM.YYYY HH:mm').add(30, 'minutes').format('DD.MM.YYYY HH:mm')
