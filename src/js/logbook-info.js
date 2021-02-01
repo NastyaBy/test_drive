@@ -175,7 +175,6 @@ const updateLogbookInfo = (data) => {
         currentLogbookData = data
       })
       .finally(() => {
-        console.info(currentLogbookData)
         testDriveId.value = currentLogbookData.ID
         emptyLogbookInfo = false
         testDriveCarId.value = currentLogbookData.UF_CAR_ID
