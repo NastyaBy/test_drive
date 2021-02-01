@@ -181,8 +181,8 @@ const updateLogbookInfo = (data) => {
         testDriveCarId.value = currentLogbookData.UF_CAR_ID
         testDriveClientName.value = currentLogbookData.UF_CLIENT_NAME
         testDriveClientPhone.value = currentLogbookData.UF_CLIENT_PHONE
-        testDriveTimeFromField.value = moment(currentLogbookData.UF_DATE_FROM, 'DD.MM.YYYY HH:mm')
-        testDriveTimeToField.value = moment(currentLogbookData.UF_DATE_TO, 'DD.MM.YYYY HH:mm')
+        testDriveTimeFromField.value = currentLogbookData.UF_DATE_FROM.slice(0, -3)
+        testDriveTimeToField.value = currentLogbookData.UF_DATE_TO.slice(0, -3)
         testDriveType.value = currentLogbookData.UF_TYPE
         testDrivePlaygroundSelect.value = currentLogbookData.UF_DEPARTMENT
         testDriveRunBefore.value = currentLogbookData.UF_RUN_BEFORE
