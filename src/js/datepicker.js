@@ -43,7 +43,6 @@ const initRangeDatePicker = (fieldElement) => {
   return new Lightpick({
     field: fieldElement,
     format: 'DD.MM.YYYY',
-    //   orientation: 'top',
     onSelect: function (date) {
       console.info(date.format('DD.MM.YYYY'))
     },
