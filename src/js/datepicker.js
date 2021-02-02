@@ -5,6 +5,7 @@ import { getLogbookCarsList } from './server'
 import { showDepartmentsTable } from './filter'
 
 const prevMonth = moment().date(1).subtract(1, 'month')
+let selectedGeneralDate = ''
 
 const initGeneralDatePicker = (departmentsList) => {
   const getTableInfo = (date) => {
@@ -12,7 +13,6 @@ const initGeneralDatePicker = (departmentsList) => {
     logbook.classList.add(`logbook--loading`)
     getLogbookCarsList(date)
       .then((data) => {
-        console.log(date)
         initTable(departmentsList, data, date)
         showDepartmentsTable()
       })
@@ -35,6 +35,7 @@ const initGeneralDatePicker = (departmentsList) => {
     },
     onSelect: function (date) {
       const selectedDate = date.format('DD.MM.YYYY')
+      selectedGeneralDate = selectedDate
       getTableInfo(selectedDate)
     },
   })
@@ -50,4 +51,4 @@ const initRangeDatePicker = (fieldElement) => {
   })
 }
 
-export { initGeneralDatePicker, initRangeDatePicker }
+export { initGeneralDatePicker, initRangeDatePicker, selectedGeneralDate }

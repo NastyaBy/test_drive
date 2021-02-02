@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { initRangeDatePicker } from './datepicker'
+import { initRangeDatePicker, selectedGeneralDate } from './datepicker'
 import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo, getLogbookPeople } from './server'
 import { initTable } from './table'
 import { showDepartmentsTable } from './filter'
@@ -174,6 +174,7 @@ const initLogbookInfoLogic = (departmentsList) => {
       testDrivePlaygroundSelect.setAttribute('disabled', 'disabled')
     } else {
       testDrivePlaygroundSelect.removeAttribute('disabled')
+     // testDrivePlaygroundSelect.value =
     }
   }
   changeShroud()
@@ -365,12 +366,10 @@ const sendForm = () => {
     })
     .finally(() => {
       getDepartmentCarsList().then((departmentCarsList) => {
-        const date = testDriveTimeDateFrom.value
+        const date = selectedGeneralDate
 
         getLogbookCarsList(date)
           .then((data) => {
-            console.log(date)
-
             initTable(departmentCarsList, data, date)
             showDepartmentsTable()
           })
