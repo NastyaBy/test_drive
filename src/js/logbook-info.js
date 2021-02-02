@@ -174,56 +174,62 @@ const updateLogbookInfo = (data) => {
       .then((data) => {
         currentLogbookData = data
       })
+      .catch(() => {
+        currentLogbookData = null
+      })
       .finally(() => {
-        testDriveId.value = currentLogbookData.ID
-        emptyLogbookInfo = false
-        testDriveCarId.value = currentLogbookData.UF_CAR_ID
-        testDriveClientName.value = currentLogbookData.UF_CLIENT_NAME
-        testDriveClientPhone.value = currentLogbookData.UF_CLIENT_PHONE
-        testDriveTimeFromField.value = currentLogbookData.UF_DATE_FROM.slice(0, -3)
-        testDriveTimeToField.value = currentLogbookData.UF_DATE_TO.slice(0, -3)
-        testDriveType.value = currentLogbookData.UF_TYPE
-        testDrivePlaygroundSelect.value = currentLogbookData.UF_DEPARTMENT
-        testDriveRunBefore.value = currentLogbookData.UF_RUN_BEFORE
-        testDriveRunAfter.value = currentLogbookData.UF_RUN_AFTER
-        testDriveCommentary.value = currentLogbookData.UF_COMMENTARY
-        testDriveByNumber.value = currentLogbookData.UF_BY_NUMBER
-        testDriveIdentityDatePicker.value = currentLogbookData.UF_DATE_GIVE
-        testDriveStatus.value = currentLogbookData.UF_STATUS
-        testDriveAssigned.value = currentLogbookData.UF_ASSIGNED
+        console.info(currentLogbookData)
+        if (!!currentLogbookData) {
+          testDriveId.value = currentLogbookData.ID
+          emptyLogbookInfo = false
+          testDriveCarId.value = currentLogbookData.UF_CAR_ID
+          testDriveClientName.value = currentLogbookData.UF_CLIENT_NAME
+          testDriveClientPhone.value = currentLogbookData.UF_CLIENT_PHONE
+          testDriveTimeFromField.value = currentLogbookData.UF_DATE_FROM.slice(0, -3)
+          testDriveTimeToField.value = currentLogbookData.UF_DATE_TO.slice(0, -3)
+          testDriveType.value = currentLogbookData.UF_TYPE
+          testDrivePlaygroundSelect.value = currentLogbookData.UF_DEPARTMENT
+          testDriveRunBefore.value = currentLogbookData.UF_RUN_BEFORE
+          testDriveRunAfter.value = currentLogbookData.UF_RUN_AFTER
+          testDriveCommentary.value = currentLogbookData.UF_COMMENTARY
+          testDriveByNumber.value = currentLogbookData.UF_BY_NUMBER
+          testDriveIdentityDatePicker.value = currentLogbookData.UF_DATE_GIVE
+          testDriveStatus.value = currentLogbookData.UF_STATUS
+          testDriveAssigned.value = currentLogbookData.UF_ASSIGNED
 
-        switch (currentLogbookData.UF_STATUS) {
-          case 'Пройден':
-            testDriveStatus.value = 'Пройден'
-            break
-          case 'Отменен':
-            testDriveStatus.value = 'Отменен'
-            break
-          case 'Запланирован':
-            testDriveStatus.value = 'Запланирован'
-            break
-          case 'Просрочен':
-            testDriveStatus.value = 'Просрочен'
-            break
-          default:
-            testDriveStatus.value = 'Запланирован'
-        }
+          switch (currentLogbookData.UF_STATUS) {
+            case 'Пройден':
+              testDriveStatus.value = 'Пройден'
+              break
+            case 'Отменен':
+              testDriveStatus.value = 'Отменен'
+              break
+            case 'Запланирован':
+              testDriveStatus.value = 'Запланирован'
+              break
+            case 'Просрочен':
+              testDriveStatus.value = 'Просрочен'
+              break
+            default:
+              testDriveStatus.value = 'Запланирован'
+          }
 
-        switch (currentLogbookData.UF_TYPE) {
-          case 'Тест-драйв':
-            testDriveType.value = 'Тест-драйв'
-            break
-          case 'Длительный тест-драйв':
-            testDriveType.value = 'Длительный тест-драйв'
-            break
-          case 'Служебный':
-            testDriveType.value = 'Служебная'
-            break
-          case 'Перемещение':
-            testDriveType.value = 'Перемещение'
-            break
-          default:
-            testDriveType.value = 'Тест-драйв'
+          switch (currentLogbookData.UF_TYPE) {
+            case 'Тест-драйв':
+              testDriveType.value = 'Тест-драйв'
+              break
+            case 'Длительный тест-драйв':
+              testDriveType.value = 'Длительный тест-драйв'
+              break
+            case 'Служебный':
+              testDriveType.value = 'Служебная'
+              break
+            case 'Перемещение':
+              testDriveType.value = 'Перемещение'
+              break
+            default:
+              testDriveType.value = 'Тест-драйв'
+          }
         }
       })
   } else {
