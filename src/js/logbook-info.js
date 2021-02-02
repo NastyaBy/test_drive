@@ -158,9 +158,6 @@ const initLogbookInfoLogic = (departmentsList) => {
   testDriveTimeDateToCalendar = new initRangeDatePicker(testDriveTimeDateTo)
   initTimePicker(testDriveTimeToField)
 
-  console.info({ testDriveTimeFromField, testDriveTimeDateFrom })
-  console.info({ testDriveTimeFromField, testDriveTimeDateTo })
-
   testDriveIdentityDatePickerCalendar = new initRangeDatePicker(testDriveIdentityDatePicker)
 
   departmentsList.forEach((item) => {
@@ -206,7 +203,6 @@ const updateLogbookInfo = (data) => {
         currentLogbookData = null
       })
       .finally(() => {
-        console.info(currentLogbookData)
         if (!!currentLogbookData) {
           testDriveId.value = currentLogbookData.ID
           emptyLogbookInfo = false
