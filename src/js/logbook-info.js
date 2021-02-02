@@ -151,6 +151,36 @@ const clearLogbookInfo = () => {
   if (!!testDriveTimeDateToCalendar) testDriveTimeDateToCalendar.destroy()
 }
 
+const initLogbookInfoLogic = (departmentsList) => {
+  testDriveTimeDateFromCalendar = new initRangeDatePicker(testDriveTimeDateFrom)
+  initTimePicker(testDriveTimeFromField)
+
+  testDriveTimeDateToCalendar = new initRangeDatePicker(testDriveTimeDateTo)
+  initTimePicker(testDriveTimeToField)
+
+  console.info({ testDriveTimeFromField, testDriveTimeDateFrom })
+  console.info({ testDriveTimeFromField, testDriveTimeDateTo })
+
+  testDriveIdentityDatePickerCalendar = new initRangeDatePicker(testDriveIdentityDatePicker)
+
+  departmentsList.forEach((item) => {
+    testDrivePlaygroundSelect.innerHTML += `<option class="form-select__optional" value="${item[0]}">${item[1]}</option>`
+  })
+
+  const changeShroud = () => {
+    if (testDrivePurposeOfTripSelect.value !== 'Перемещение') {
+      testDrivePlaygroundSelect.setAttribute('disabled', 'disabled')
+    } else {
+      testDrivePlaygroundSelect.removeAttribute('disabled')
+    }
+  }
+  changeShroud()
+
+  testDrivePurposeOfTripSelect.addEventListener('change', () => {
+    changeShroud()
+  })
+}
+
 let emptyLogbookInfo = false
 
 const updateLogbookInfo = (data) => {
@@ -160,8 +190,6 @@ const updateLogbookInfo = (data) => {
   const departmentsList = data.departmentsList
 
   testDriveField.value = carInfo.UF_TEST_DRIVE
-  testDriveStatus.value = 'Запланирован'
-  testDriveType.value = 'Тест-драйв'
   testDriveCarId.value = carInfo.ID
 
   //проверяем на заполнотость logbookInfo
@@ -230,40 +258,19 @@ const updateLogbookInfo = (data) => {
             default:
               testDriveType.value = 'Тест-драйв'
           }
+
+          initLogbookInfoLogic(departmentsList)
         }
       })
-  } else {
+  } else if (data.emptyLogbookCar) {
+    emptyLogbookInfo = true
+    testDriveStatus.value = 'Запланирован'
+    testDriveType.value = 'Тест-драйв'
     testDriveTimeFromField.value = selectedDate
     testDriveTimeToField.value = moment(selectedDate, 'DD.MM.YYYY HH:mm').add(30, 'minutes').format('DD.MM.YYYY HH:mm')
-    if (data.emptyLogbookCar) emptyLogbookInfo = true
+    testDrivePlaygroundSelect.value = carInfo.UF_DEPARTMENT
+    initLogbookInfoLogic(departmentsList)
   }
-
-  testDriveTimeDateFromCalendar = new initRangeDatePicker(testDriveTimeDateFrom)
-  initTimePicker(testDriveTimeFromField)
-
-  testDriveTimeDateToCalendar = new initRangeDatePicker(testDriveTimeDateTo)
-  initTimePicker(testDriveTimeToField)
-
-  testDriveIdentityDatePickerCalendar = new initRangeDatePicker(testDriveIdentityDatePicker)
-
-  departmentsList.forEach((item) => {
-    testDrivePlaygroundSelect.innerHTML += `<option class="form-select__optional" value="${item[0]}">${item[1]}</option>`
-  })
-
-  testDrivePlaygroundSelect.value = carInfo.UF_DEPARTMENT
-
-  const changeShroud = () => {
-    if (testDrivePurposeOfTripSelect.value !== 'Перемещение') {
-      testDrivePlaygroundSelect.setAttribute('disabled', 'disabled')
-    } else {
-      testDrivePlaygroundSelect.removeAttribute('disabled')
-    }
-  }
-  changeShroud()
-
-  testDrivePurposeOfTripSelect.addEventListener('change', () => {
-    changeShroud()
-  })
 }
 
 const closeLogbookInfo = (evt) => {
