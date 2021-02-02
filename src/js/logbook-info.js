@@ -15,8 +15,9 @@ const TIMEPICKER_BLACKOUT_CLASS_OPEN = 'fieldset__blackout--show'
 const urlParams = new URLSearchParams(window.location.search)
 const dealId = urlParams.get('deal_id')
 
-const testDriveField = logbookInfo.querySelector('.js-testDrive')
+const form = logbookInfo.querySelector('.js-logbookForm')
 
+const testDriveField = logbookInfo.querySelector('.js-testDrive')
 const testDriveTimeFromField = logbookInfo.querySelector('.js-testDriveTimeFrom')
 const testDriveTimeToField = logbookInfo.querySelector('.js-testDriveTimeTo')
 const testDriveStatus = logbookInfo.querySelector('.js-testDriveStatus')
@@ -174,7 +175,6 @@ const initLogbookInfoLogic = (departmentsList) => {
       testDrivePlaygroundSelect.setAttribute('disabled', 'disabled')
     } else {
       testDrivePlaygroundSelect.removeAttribute('disabled')
-     // testDrivePlaygroundSelect.value =
     }
   }
   changeShroud()
@@ -187,6 +187,8 @@ const initLogbookInfoLogic = (departmentsList) => {
 let emptyLogbookInfo = false
 
 const updateLogbookInfo = (data) => {
+  form.classList.add(`form--loading`)
+
   const carInfo = data.car
   const selectedDate = data.currentMomentFormatted
   const carLogbookInfo = data.lastLogbookCar
@@ -238,7 +240,6 @@ const updateLogbookInfo = (data) => {
           testDriveTimeFromField.value = currentLogbookData.UF_DATE_FROM.slice(0, -3)
           testDriveTimeToField.value = currentLogbookData.UF_DATE_TO.slice(0, -3)
           testDriveType.value = currentLogbookData.UF_TYPE
-          testDrivePlaygroundSelect.value = currentLogbookData.UF_DEPARTMENT
           testDriveRunBefore.value = currentLogbookData.UF_RUN_BEFORE
           testDriveRunAfter.value = currentLogbookData.UF_RUN_AFTER
           testDriveCommentary.value = currentLogbookData.UF_COMMENTARY
@@ -280,8 +281,10 @@ const updateLogbookInfo = (data) => {
             default:
               testDriveType.value = 'Тест-драйв'
           }
-
           initLogbookInfoLogic(departmentsList)
+
+          testDrivePlaygroundSelect.value = carLogbookInfo.UF_DEPARTMENT
+          form.classList.remove(`form--loading`)
         }
       })
   } else if (data.emptyLogbookCar) {
@@ -290,8 +293,9 @@ const updateLogbookInfo = (data) => {
     testDriveType.value = 'Тест-драйв'
     testDriveTimeFromField.value = selectedDate
     testDriveTimeToField.value = moment(selectedDate, 'DD.MM.YYYY HH:mm').add(30, 'minutes').format('DD.MM.YYYY HH:mm')
-    testDrivePlaygroundSelect.value = carInfo.UF_DEPARTMENT
     initLogbookInfoLogic(departmentsList)
+    testDrivePlaygroundSelect.value = carInfo.UF_DEPARTMENT[0].toString()
+    form.classList.remove(`form--loading`)
   }
 }
 
@@ -330,8 +334,6 @@ window.addEventListener('keydown', (evt) => {
 })
 
 const sendForm = () => {
-  const form = logbookInfo.querySelector('.js-logbookForm')
-
   const data = {
     UF_DEAL_ID: dealId,
     UF_ASSIGNED_NAME: testDriveAssigned.value,

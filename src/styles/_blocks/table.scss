@@ -62,7 +62,6 @@
       text-transform: uppercase;
       color: $table-passed-color;
       background: $table-passed-background-color;
-      border-color: $table-passed-background-color;
     }
 
     &--cancelled {
@@ -71,7 +70,6 @@
       text-transform: uppercase;
       color: $table-cancelled-color;
       background: $table-cancelled-background-color;
-      border-color: $table-cancelled-background-color;
     }
 
     &--unavailable {
@@ -79,7 +77,6 @@
       font-weight: bold;
       text-transform: uppercase;
       background: $table-unavailable-background-color;
-      border-color: $table-unavailable-background-color;
     }
 
     &--recorded {
@@ -88,7 +85,6 @@
       text-transform: uppercase;
       color: $table-recorded-color;
       background: $table-recorded-background-color;
-      border-color: $table-recorded-background-color;
     }
 
     &--expired {
