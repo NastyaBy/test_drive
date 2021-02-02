@@ -365,12 +365,10 @@ const sendForm = () => {
     })
     .finally(() => {
       getDepartmentCarsList().then((departmentCarsList) => {
-        const date = testDriveTimeDateTo.value
+        const date = testDriveTimeDateFrom.value
 
         getLogbookCarsList(date)
           .then((data) => {
-            console.log(departmentCarsList)
-            console.log(data)
             console.log(date)
 
             initTable(departmentCarsList, data, date)

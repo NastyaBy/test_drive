@@ -12,6 +12,7 @@ const initGeneralDatePicker = (departmentsList) => {
     logbook.classList.add(`logbook--loading`)
     getLogbookCarsList(date)
       .then((data) => {
+        console.log(date)
         initTable(departmentsList, data, date)
         showDepartmentsTable()
       })
