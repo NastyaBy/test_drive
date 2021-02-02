@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { initRangeDatePicker } from './datepicker'
-import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo } from './server'
+import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo, getLogbookPeople } from './server'
 import { initTable } from './table'
 import { showDepartmentsTable } from './filter'
 
@@ -11,6 +11,9 @@ const closeBtnLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
 const LOGBOOKINFO_CLASS_SHOW = 'logbook__info--show'
 const TIMEPICKER_CLASS_OPEN = 'fieldset__dropdown--show'
 const TIMEPICKER_BLACKOUT_CLASS_OPEN = 'fieldset__blackout--show'
+
+const urlParams = new URLSearchParams(window.location.search)
+const dealId = urlParams.get('deal_id')
 
 const testDriveField = logbookInfo.querySelector('.js-testDrive')
 
@@ -28,6 +31,7 @@ const testDriveAssigned = logbookInfo.querySelector('.js-testDriveAssigned')
 const testDriveCarId = logbookInfo.querySelector('.js-testDriveCarId')
 const testDriveId = logbookInfo.querySelector('.js-testDriveId')
 
+const testDriveAssignedId = logbookInfo.querySelector('.js-testDriveAssignedId')
 const testDriveTimeSelectFrom = logbookInfo.querySelector('.js-testDriveTimeSelectFrom')
 const testDriveTimeDateFrom = logbookInfo.querySelector('.js-testDriveTimeDateFrom')
 let testDriveTimeDateFromCalendar = null
@@ -129,6 +133,7 @@ const initTimePicker = (input) => {
 }
 
 const clearLogbookInfo = () => {
+  testDriveAssignedId.value = ''
   testDriveField.value = ''
   testDriveTimeFromField.value = ''
   testDriveTimeToField.value = ''
@@ -189,6 +194,25 @@ const updateLogbookInfo = (data) => {
   testDriveField.value = carInfo.UF_TEST_DRIVE
   testDriveCarId.value = carInfo.ID
 
+  // получаем данные клиента и пользователя
+  let currentPeople = []
+
+  getLogbookPeople(dealId)
+    .then((data) => {
+      currentPeople = data
+    })
+    .catch(() => {
+      currentPeople = null
+    })
+    .finally(() => {
+      if (!!currentPeople) {
+        testDriveClientName.value = currentPeople[0].FULL_NAME
+        testDriveClientPhone.value = currentPeople[0].PHONE
+        testDriveAssigned.value = currentPeople[1].FULL_NAME
+        testDriveAssignedId.value = currentPeople[1].ID
+      }
+    })
+
   //проверяем на заполнотость logbookInfo
 
   if (!!carLogbookInfo && !!carLogbookInfo.ID) {
@@ -205,6 +229,7 @@ const updateLogbookInfo = (data) => {
       .finally(() => {
         if (!!currentLogbookData) {
           testDriveId.value = currentLogbookData.ID
+          testDriveAssignedId.value = currentLogbookData.UF_ASSIGNED
           emptyLogbookInfo = false
           testDriveCarId.value = currentLogbookData.UF_CAR_ID
           testDriveClientName.value = currentLogbookData.UF_CLIENT_NAME
@@ -219,7 +244,7 @@ const updateLogbookInfo = (data) => {
           testDriveByNumber.value = currentLogbookData.UF_BY_NUMBER
           testDriveIdentityDatePicker.value = currentLogbookData.UF_DATE_GIVE
           testDriveStatus.value = currentLogbookData.UF_STATUS
-          testDriveAssigned.value = currentLogbookData.UF_ASSIGNED
+          testDriveAssigned.value = currentLogbookData.UF_ASSIGNED_NAME
 
           switch (currentLogbookData.UF_STATUS) {
             case 'Пройден':
@@ -305,11 +330,10 @@ window.addEventListener('keydown', (evt) => {
 
 const sendForm = () => {
   const form = logbookInfo.querySelector('.js-logbookForm')
-  const urlParams = new URLSearchParams(window.location.search)
-  const dealId = urlParams.get('deal_id')
 
   const data = {
     UF_DEAL_ID: dealId,
+    UF_ASSIGNED_NAME: testDriveAssigned.value,
     UF_CAR_ID: testDriveCarId.value,
     UF_TEST_DRIVE: testDriveField.value,
     UF_CLIENT_NAME: testDriveClientName.value,
@@ -324,7 +348,7 @@ const sendForm = () => {
     UF_BY_NUMBER: testDriveByNumber.value,
     UF_DATE_GIVE: testDriveIdentityDatePicker.value,
     UF_STATUS: testDriveStatus.value,
-    UF_ASSIGNED: testDriveAssigned.value,
+    UF_ASSIGNED: testDriveAssignedId.value,
   }
 
   if (!emptyLogbookInfo) {
@@ -345,6 +369,10 @@ const sendForm = () => {
 
         getLogbookCarsList(date)
           .then((data) => {
+            console.log(departmentCarsList)
+            console.log(data)
+            console.log(date)
+
             initTable(departmentCarsList, data, date)
             showDepartmentsTable()
           })

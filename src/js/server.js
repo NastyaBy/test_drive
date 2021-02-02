@@ -7,6 +7,9 @@ const DATA_URL = {
   LOGBOOK_CARS: isDev
     ? `http://my-json-server.typicode.com/Gover/test-data/LOGBOOK_CARS`
     : `https://crm.atlantm.com/esoft/test-drive/requests/highloadhttp.php`,
+  LOGBOOK_PEOPLE: isDev
+    ? `http://my-json-server.typicode.com/Gover/test-data/LOGBOOK_CARS`
+    : `https://crm.atlantm.com/esoft/test-drive/requests/peoplesearchhttp.php`,
 }
 
 const getDepartmentCarsList = async () => {
@@ -24,6 +27,11 @@ const getLogbookInfo = async (id) => {
   return await response.json()
 }
 
+const getLogbookPeople = async (dealId) => {
+  const response = await fetch(`${DATA_URL.LOGBOOK_PEOPLE}?deal_id=${dealId}`)
+  return await response.json()
+}
+
 const saveLogbookInfo = async (data = {}) => {
   const response = await fetch(`${DATA_URL.LOGBOOK_CARS}`, {
     method: 'POST',
@@ -35,4 +43,4 @@ const saveLogbookInfo = async (data = {}) => {
   return await response.json()
 }
 
-export { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo }
+export { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo, getLogbookPeople }

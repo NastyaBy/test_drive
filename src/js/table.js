@@ -158,8 +158,11 @@ const initTable = (departmentCars, logbookCars, selectedDate) => {
         const departmentName = departmentsList.filter((x) => x[0] === data.lastLogbookCar.UF_DEPARTMENT)
 
         cellClass = 'table__cell--unavailable'
-        text = `ЗАПИСЬ НЕДОСТУПНА - Авто перемещен на площадку
+
+        if (departmentName.length > 0) {
+          text = `ЗАПИСЬ НЕДОСТУПНА - Авто перемещен на площадку
          ${departmentName[0][1]} до ${data.lastLogbookCar.UF_DATE_TO.slice(0, -3)}`
+        }
       }
     }
 
