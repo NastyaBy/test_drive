@@ -2,7 +2,6 @@ import * as Lightpick from 'Lightpick'
 import moment from 'moment'
 import { initTable } from './table'
 import { getLogbookCarsList } from './server'
-import { showDepartmentsTable } from './filter'
 
 const prevMonth = moment().date(1).subtract(1, 'month')
 let selectedGeneralDate = ''
@@ -14,7 +13,6 @@ const initGeneralDatePicker = (departmentsList) => {
     getLogbookCarsList(date)
       .then((data) => {
         initTable(departmentsList, data, date)
-        showDepartmentsTable()
       })
       .finally(() => {
         logbook.classList.remove(`logbook--loading`)

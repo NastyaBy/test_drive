@@ -1,12 +1,13 @@
 @import '../untils/variables';
 
 .form {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 100px;
+  bottom: 50px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  max-height: 100vh;
+  max-height: calc(100vh - 150px);
   padding: 20px 10px 10px;
   overflow: auto;
   background: $form-background-color;
@@ -31,7 +32,7 @@
 
   &__row {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   &__fieldset {

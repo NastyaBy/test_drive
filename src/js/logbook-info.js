@@ -2,7 +2,6 @@ import moment from 'moment'
 import { initRangeDatePicker, selectedGeneralDate } from './datepicker'
 import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo, getLogbookPeople } from './server'
 import { initTable } from './table'
-import { showDepartmentsTable } from './filter'
 
 let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
@@ -369,11 +368,13 @@ const sendForm = () => {
     .finally(() => {
       getDepartmentCarsList().then((departmentCarsList) => {
         const date = selectedGeneralDate
-
+        console.log(date)
         getLogbookCarsList(date)
           .then((data) => {
+            console.log(departmentCarsList)
+            console.log(data)
+            console.log(date)
             initTable(departmentCarsList, data, date)
-            showDepartmentsTable()
           })
           .finally(() => {
             form.classList.remove(`form--loading`)
