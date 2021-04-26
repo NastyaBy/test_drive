@@ -7,6 +7,7 @@ let isLogbookInfoShow = false
 const logbookInfo = document.querySelector('.js-logbookInfo')
 const sendBtnLogbookInfo = logbookInfo.querySelector('.js-sendLogbookInfo')
 const closeBtnLogbookInfo = logbookInfo.querySelector('.js-closeLogbookInfo')
+const sealBtnLogbookInfo = logbookInfo.querySelector('.js-sealLogbookInfo')
 const LOGBOOKINFO_CLASS_SHOW = 'logbook__info--show'
 const TIMEPICKER_CLASS_OPEN = 'fieldset__dropdown--show'
 const TIMEPICKER_BLACKOUT_CLASS_OPEN = 'fieldset__blackout--show'
@@ -324,6 +325,11 @@ closeBtnLogbookInfo.addEventListener('click', (evt) => {
   if (isLogbookInfoShow) {
     closeLogbookInfo(evt)
   }
+})
+
+sealBtnLogbookInfo.addEventListener('click', (evt) => {
+  const downloadUrl = `https://crm.atlantm.com/esoft/test-drive/requests/printdocclass.php?id=${testDriveId.value}`
+  window.location.href = downloadUrl
 })
 
 window.addEventListener('keydown', (evt) => {
