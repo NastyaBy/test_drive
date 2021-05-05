@@ -54,6 +54,7 @@ const listenerClickInputTimePicker = (event) => {
   dropdown.classList.toggle(TIMEPICKER_CLASS_OPEN)
   blackoutTimepicker.classList.toggle(TIMEPICKER_BLACKOUT_CLASS_OPEN)
 }
+
 const listenerClickBlackoutTimePicker = (event) => {
   const blackoutTimepicker = event.target
   const dropdown = blackoutTimepicker.previousElementSibling
@@ -121,6 +122,7 @@ const initTimePicker = (input) => {
   timeSelect.addEventListener('change', (evt) => {
     changeTimePicker(input, timeSelect.value, dateInput.value ? dateInput.value : moment().format('DD.MM.YYYY'))
   })
+
   blackoutTimePicker.addEventListener('click', listenerClickBlackoutTimePicker, false)
   window.addEventListener('keydown', (evt) => {
     if (evt.keyCode === 27) {
@@ -328,7 +330,7 @@ closeBtnLogbookInfo.addEventListener('click', (evt) => {
 })
 
 sealBtnLogbookInfo.addEventListener('click', (evt) => {
-  const downloadUrl = `https://crm.atlantm.com/esoft/test-drive/requests/printdocclass.php?id=${testDriveId.value}`
+  const downloadUrl = `https://crm.atlantm.com/esoft/test-drive/requests/choosedoverenost.php?id=${testDriveId.value}`
   window.location.href = downloadUrl
 })
 
