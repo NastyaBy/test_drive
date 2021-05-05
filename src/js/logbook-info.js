@@ -331,7 +331,7 @@ closeBtnLogbookInfo.addEventListener('click', (evt) => {
 
 sealBtnLogbookInfo.addEventListener('click', (evt) => {
   const downloadUrl = `https://crm.atlantm.com/esoft/test-drive/requests/choosedoverenost.php?id=${testDriveId.value}`
-  window.location.href = downloadUrl
+  window.open(downloadUrl)
 })
 
 window.addEventListener('keydown', (evt) => {
