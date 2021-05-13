@@ -1,0 +1,47 @@
+@import '../untils/variables';
+
+.search {
+  position: absolute;
+  z-index: 5;
+  left: 10px;
+  right: 10px;
+  bottom: 100%;
+  max-height: 180px;
+  min-width: 140px;
+  min-height: 25px;
+  user-select: none;
+  list-style: none;
+  white-space: nowrap;
+  margin: 4px 0 -25px 0;
+  padding: 0;
+  background: $form-background-color;
+  border: 1px solid $form-input-border-color;
+  cursor: pointer;
+  overflow-x: auto;
+  border-radius: 6px;
+
+  &:empty {
+    display: none;
+  }
+
+  &--order {
+    top: 68px;
+    bottom: auto;
+  }
+
+  &__item {
+    font-size: 13px;
+    padding: 5px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:empty {
+      display: none;
+    }
+
+    &:hover {
+      color: $border-checkbox-color-hover;
+    }
+  }
+}

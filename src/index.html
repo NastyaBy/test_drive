@@ -1,320 +1,338 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Журнала записи на ТД</title>
-  </head>
-  <body>
-    <header class="visually-hidden"></header>
+</head>
+<body>
+<header class="visually-hidden"></header>
 
-    <main>
-      <h1 class="visually-hidden">Журнала записи на ТД</h1>
-      <div class="logbook logbook--loading js-logbook">
+<main>
+    <h1 class="visually-hidden">Журнала записи на ТД</h1>
+    <div class="logbook logbook--loading js-logbook">
         <i class="logbook__loader">
-          <span></span>
-          <span></span>
-          <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </i>
 
         <div class="logbook__filter">
-          <div class="filter js-checkbox-group">
-            <strong class="filter__title">Список площадок к выбору</strong>
-            <div class="filter__item js-filterBox">
-              <div class="form-checkbox">
-                <input
-                  class="form-checkbox__control js-checkbox-main"
-                  type="checkbox"
-                  name="playground"
-                  id="all"
-                  value="All"
-                />
-                <label class="form-checkbox__text" for="all">Все площадки</label>
-              </div>
+            <div class="filter js-checkbox-group">
+                <strong class="filter__title">Список площадок к выбору</strong>
+                <div class="filter__item js-filterBox">
+                    <div class="form-checkbox">
+                        <input
+                                class="form-checkbox__control js-checkbox-main"
+                                type="checkbox"
+                                name="playground"
+                                id="all"
+                                value="All"
+                        />
+                        <label class="form-checkbox__text" for="all">Все площадки</label>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
         <div class="logbook__calendar">
-          <div class="calendar">
-            <input class="visually-hidden" type="text"  id="generalDatePicker" />
-          </div>
+            <div class="calendar">
+                <input class="visually-hidden" type="text" id="generalDatePicker"/>
+            </div>
         </div>
 
         <div class="logbook__table">
-          <div class="table-wrapper js-logbookTable"></div>
+            <div class="table-wrapper js-logbookTable"></div>
         </div>
 
         <section class="logbook__info js-logbookInfo">
-          <form class="form js-logbookForm" action="#" method="post" autocomplete="off">
-            <input class="js-testDriveCarId" name="UF_CAR_ID" type="hidden">
-            <input class="js-testDriveId" name="ID" type="hidden">
-            <input class="js-testDriveAssignedId" name="ID_ASSIGNED" type="hidden">
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--full">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="auto">Тестовый АВТО</label>
-                  <textarea
-                    class="form-input form-input--description js-testDrive"
-                    id="auto"
-                    name="UF_TEST_DRIVE"
-                    rows="3"
-                    placeholder="Тестовый АВТО"
-                    readonly
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="client">Клиент </label>
-                  <input
-                    class="form-input js-testDriveClientName"
-                    id="client"
-                    name="UF_CLIENT_NAME"
-                    type="text"
-                    placeholder="ФИО Клиента"
-                    aria-label="Поле для ввода ФИО"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="tel">Телефон</label>
-                  <input
-                    class="form-input js-testDriveClientPhone"
-                    id="tel"
-                    name="UF_CLIENT_PHONE"
-                    type="tel"
-                    placeholder="+375 ХХ ХХХ ХХ ХХ"
-                    aria-label="Поле для ввода телефона"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <span class="fieldset__title">Начало</span>
-                  <input class="form-input js-testDriveTimeFrom" name="UF_DATE_FROM" type="text" />
-                  <div class="fieldset__dropdown">
-                    <div class="fieldset__time">
-                      <label class="form-select form-select--time">
-                        <select class="form-select__input js-testDriveTimeSelect js-testDriveTimeSelectFrom">
-                          <option class="form-select__optional" value="09:00">09:00</option>
-                          <option class="form-select__optional" value="09:30">09:30</option>
-                          <option class="form-select__optional" value="10:00">10:00</option>
-                          <option class="form-select__optional" value="10:30">10:30</option>
-                          <option class="form-select__optional" value="11:00">11:00</option>
-                          <option class="form-select__optional" value="11:30">11:30</option>
-                          <option class="form-select__optional" value="12:00">12:00</option>
-                          <option class="form-select__optional" value="12:30">12:30</option>
-                          <option class="form-select__optional" value="13:00">13:00</option>
-                          <option class="form-select__optional" value="13:30">13:30</option>
-                          <option class="form-select__optional" value="14:00">14:00</option>
-                          <option class="form-select__optional" value="14:30">14:30</option>
-                          <option class="form-select__optional" value="15:00">15:00</option>
-                          <option class="form-select__optional" value="15:30">15:30</option>
-                          <option class="form-select__optional" value="16:00">16:00</option>
-                          <option class="form-select__optional" value="16:30">16:30</option>
-                          <option class="form-select__optional" value="17:00">17:00</option>
-                          <option class="form-select__optional" value="17:30">17:30</option>
-                          <option class="form-select__optional" value="18:00">18:00</option>
-                        </select>
-                      </label>
-                      <span class="fieldset__time-divider">-</span>
-                      <input class="form-input form-input--date js-testDriveDateInput js-testDriveTimeDateFrom" type="text" />
+            <form class="form js-logbookForm" action="#" method="post" autocomplete="off">
+                <input class="js-testDriveCarId" name="UF_CAR_ID" type="hidden">
+                <input class="js-testDriveId" name="ID" type="hidden">
+                <input class="js-testDriveAssignedId" name="ID_ASSIGNED" type="hidden">
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--container form__fieldset--full">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="itsDeal">Сделка</label>
+                            <input
+                                    class="form-input input-search js-testDriveOrder"
+                                    id="itsDeal"
+                                    name=""
+                                    type="text"
+                                    placeholder="Поиск сделки"
+                                    aria-label="Поле для ввода ФИО или номера телефона"
+                                    required
+                            />
+                        </div>
+                        <ul class="search search--order js-testDriveOrderSearch"></ul>
                     </div>
-                  </div>
-                  <i class="fieldset__blackout js-closeTimepicker"></i>
                 </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <span class="fieldset__title">Окончание</span>
-                  <input class="form-input js-testDriveTimeTo" name="UF_DATE_TO" type="text" />
-                  <div class="fieldset__dropdown">
-                    <div class="fieldset__time">
-                      <label class="form-select form-select--time">
-                        <select class="form-select__input js-testDriveTimeSelect js-testDriveTimeSelectTo">
-                          <option class="form-select__optional" value="09:00">09:00</option>
-                          <option class="form-select__optional" value="09:30">09:30</option>
-                          <option class="form-select__optional" value="10:00">10:00</option>
-                          <option class="form-select__optional" value="10:30">10:30</option>
-                          <option class="form-select__optional" value="11:00">11:00</option>
-                          <option class="form-select__optional" value="11:30">11:30</option>
-                          <option class="form-select__optional" value="12:00">12:00</option>
-                          <option class="form-select__optional" value="12:30">12:30</option>
-                          <option class="form-select__optional" value="13:00">13:00</option>
-                          <option class="form-select__optional" value="13:30">13:30</option>
-                          <option class="form-select__optional" value="14:00">14:00</option>
-                          <option class="form-select__optional" value="14:30">14:30</option>
-                          <option class="form-select__optional" value="15:00">15:00</option>
-                          <option class="form-select__optional" value="15:30">15:30</option>
-                          <option class="form-select__optional" value="16:00">16:00</option>
-                          <option class="form-select__optional" value="16:30">16:30</option>
-                          <option class="form-select__optional" value="17:00">17:00</option>
-                          <option class="form-select__optional" value="17:30">17:30</option>
-                          <option class="form-select__optional" value="18:00">18:00</option>
-                        </select>
-                      </label>
-                      <span class="fieldset__time-divider">-</span>
-                      <input class="form-input form-input--date js-testDriveDateInput js-testDriveTimeDateTo" type="text" />
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--full">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="auto">Тестовый АВТО</label>
+                            <textarea
+                                    class="form-input form-input--description js-testDrive"
+                                    id="auto"
+                                    name="UF_TEST_DRIVE"
+                                    rows="3"
+                                    placeholder="Тестовый АВТО"
+                                    readonly
+                            ></textarea>
+                        </div>
                     </div>
-                  </div>
-                  <i class="fieldset__blackout js-closeTimepicker"></i>
                 </div>
-              </div>
-            </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="client">Клиент </label>
+                            <input
+                                    class="form-input js-testDriveClientName"
+                                    id="client"
+                                    name="UF_CLIENT_NAME"
+                                    type="text"
+                                    placeholder="ФИО Клиента"
+                                    aria-label="Поле для ввода ФИО"
+                                    required
+                            />
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="tel">Телефон</label>
+                            <input
+                                    class="form-input js-testDriveClientPhone"
+                                    id="tel"
+                                    name="UF_CLIENT_PHONE"
+                                    type="tel"
+                                    placeholder="+375 ХХ ХХХ ХХ ХХ"
+                                    aria-label="Поле для ввода телефона"
+                                    required
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <span class="fieldset__title">Начало</span>
+                            <input class="form-input js-testDriveTimeFrom" name="UF_DATE_FROM" type="text"/>
+                            <div class="fieldset__dropdown">
+                                <div class="fieldset__time">
+                                    <label class="form-select form-select--time">
+                                        <select class="form-select__input js-testDriveTimeSelect js-testDriveTimeSelectFrom">
+                                            <option class="form-select__optional" value="09:00">09:00</option>
+                                            <option class="form-select__optional" value="09:30">09:30</option>
+                                            <option class="form-select__optional" value="10:00">10:00</option>
+                                            <option class="form-select__optional" value="10:30">10:30</option>
+                                            <option class="form-select__optional" value="11:00">11:00</option>
+                                            <option class="form-select__optional" value="11:30">11:30</option>
+                                            <option class="form-select__optional" value="12:00">12:00</option>
+                                            <option class="form-select__optional" value="12:30">12:30</option>
+                                            <option class="form-select__optional" value="13:00">13:00</option>
+                                            <option class="form-select__optional" value="13:30">13:30</option>
+                                            <option class="form-select__optional" value="14:00">14:00</option>
+                                            <option class="form-select__optional" value="14:30">14:30</option>
+                                            <option class="form-select__optional" value="15:00">15:00</option>
+                                            <option class="form-select__optional" value="15:30">15:30</option>
+                                            <option class="form-select__optional" value="16:00">16:00</option>
+                                            <option class="form-select__optional" value="16:30">16:30</option>
+                                            <option class="form-select__optional" value="17:00">17:00</option>
+                                            <option class="form-select__optional" value="17:30">17:30</option>
+                                            <option class="form-select__optional" value="18:00">18:00</option>
+                                        </select>
+                                    </label>
+                                    <span class="fieldset__time-divider">-</span>
+                                    <input class="form-input form-input--date js-testDriveDateInput js-testDriveTimeDateFrom"
+                                           type="text"/>
+                                </div>
+                            </div>
+                            <i class="fieldset__blackout js-closeTimepicker"></i>
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <span class="fieldset__title">Окончание</span>
+                            <input class="form-input js-testDriveTimeTo" name="UF_DATE_TO" type="text"/>
+                            <div class="fieldset__dropdown">
+                                <div class="fieldset__time">
+                                    <label class="form-select form-select--time">
+                                        <select class="form-select__input js-testDriveTimeSelect js-testDriveTimeSelectTo">
+                                            <option class="form-select__optional" value="09:00">09:00</option>
+                                            <option class="form-select__optional" value="09:30">09:30</option>
+                                            <option class="form-select__optional" value="10:00">10:00</option>
+                                            <option class="form-select__optional" value="10:30">10:30</option>
+                                            <option class="form-select__optional" value="11:00">11:00</option>
+                                            <option class="form-select__optional" value="11:30">11:30</option>
+                                            <option class="form-select__optional" value="12:00">12:00</option>
+                                            <option class="form-select__optional" value="12:30">12:30</option>
+                                            <option class="form-select__optional" value="13:00">13:00</option>
+                                            <option class="form-select__optional" value="13:30">13:30</option>
+                                            <option class="form-select__optional" value="14:00">14:00</option>
+                                            <option class="form-select__optional" value="14:30">14:30</option>
+                                            <option class="form-select__optional" value="15:00">15:00</option>
+                                            <option class="form-select__optional" value="15:30">15:30</option>
+                                            <option class="form-select__optional" value="16:00">16:00</option>
+                                            <option class="form-select__optional" value="16:30">16:30</option>
+                                            <option class="form-select__optional" value="17:00">17:00</option>
+                                            <option class="form-select__optional" value="17:30">17:30</option>
+                                            <option class="form-select__optional" value="18:00">18:00</option>
+                                        </select>
+                                    </label>
+                                    <span class="fieldset__time-divider">-</span>
+                                    <input class="form-input form-input--date js-testDriveDateInput js-testDriveTimeDateTo"
+                                           type="text"/>
+                                </div>
+                            </div>
+                            <i class="fieldset__blackout js-closeTimepicker"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <span class="fieldset__title">Цель поездки</span>
+                            <label class="form-select">
+                                <select class="form-select__input js-purposeOfTrip js-testDriveType" name="UF_TYPE">
+                                    <option class="form-select__optional" value="Тест-драйв">Тест-драйв</option>
+                                    <option class="form-select__optional" value="Длительный тест-драйв">Длительный
+                                        тест-драйв
+                                    </option>
+                                    <option class="form-select__optional" value="Служебная">Служебная</option>
+                                    <option class="form-select__optional" value="Перемещение">Перемещение</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <span class="fieldset__title">Площадка</span>
+                            <label class="form-select">
+                                <select class="form-select__input js-playground" name="UF_DEPARTMENT"></select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="mileageOn">Пробег до</label>
+                            <input
+                                    class="form-input js-testDriveRunBefore"
+                                    id="mileageOn"
+                                    name="UF_RUN_BEFORE"
+                                    type="text"
+                                    placeholder="Пробег до"
+                                    aria-label="Пробег до тест-драйва"
+                                    required
+                            />
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="mileageOff">Пробег после</label>
+                            <input
+                                    class="form-input js-testDriveRunAfter"
+                                    id="mileageOff"
+                                    name="UF_RUN_AFTER"
+                                    type="text"
+                                    placeholder="Пробег после"
+                                    aria-label="Пробег после тест-драйва"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--full">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="description">Комментарий</label>
+                            <textarea
+                                    class="form-input form-input--textarea js-testDriveCommentary"
+                                    id="description"
+                                    name="UF_COMMENTARY"
+                                    rows="4"
+                                    placeholder="Оставьте комментарий"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="identityNumber">№ BY</label>
+                            <input
+                                    class="form-input js-testDriveByNumber"
+                                    id="identityNumber"
+                                    name="UF_BY_NUMBER"
+                                    type="text"
+                                    placeholder="1AB 235425"
+                                    aria-label="Серия и номер водительского удостоверения"
+                            />
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="identityDatePicker">Дата выдачи</label>
+                            <input
+                                    class="form-input js-testDriveIdentityDatePicker"
+                                    id="identityDatePicker"
+                                    name="UF_DATE_GIVE"
+                                    type="text"
+                                    placeholder="Дата выдачи"
+                                    aria-label="Дата выдачи водительского удостоверения"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form__row">
+                    <div class="form__fieldset form__fieldset--half">
+                        <div class="fieldset">
+                            <span class="fieldset__title">Статус</span>
+                            <label class="form-select">
+                                <select class="form-select__input js-testDriveStatus" name="UF_STATUS">
+                                    <option class="form-select__optional" value="Запланирован">Запланирован</option>
+                                    <option class="form-select__optional" value="Пройден">Пройден</option>
+                                    <option class="form-select__optional" value="Отменен">Отменен</option>
+                                    <option class="form-select__optional" value="Просрочен">Просрочен</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form__fieldset form__fieldset--container form__fieldset--half">
 
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <span class="fieldset__title">Цель поездки</span>
-                  <label class="form-select">
-                    <select class="form-select__input js-purposeOfTrip js-testDriveType" name="UF_TYPE">
-                      <option class="form-select__optional" value="Тест-драйв">Тест-драйв</option>
-                      <option class="form-select__optional" value="Длительный тест-драйв">Длительный тест-драйв</option>
-                      <option class="form-select__optional" value="Служебная">Служебная</option>
-                      <option class="form-select__optional" value="Перемещение">Перемещение</option>
-                    </select>
-                  </label>
+                        <div class="fieldset">
+                            <label class="fieldset__title" for="responsible">Ответственный</label>
+                            <input
+                                    class="form-input input-search js-testDriveAssigned"
+                                    id="responsible"
+                                    name="UF_ASSIGNED"
+                                    type="text"
+                                    placeholder="Поиск ответственного"
+                                    aria-label="Поле для ввода ФИО"
+                                    required
+                            />
+                        </div>
+                        <ul class="search js-testDriveAssignedSearch"></ul>
+                    </div>
                 </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <span class="fieldset__title">Площадка</span>
-                  <label class="form-select">
-                    <select class="form-select__input js-playground" name="UF_DEPARTMENT"></select>
-                  </label>
+                <div class="form__footer">
+                    <button class="button button--form-action js-sendLogbookInfo" type="submit" aria-label="Кнопка ок">
+                        Ок
+                    </button>
+                    <button class="button button--form-action js-closeLogbookInfo" type="reset"
+                            aria-label="Кнопка отменить">
+                        Отмена
+                    </button>
+                    <button class="button button--form-action js-sealLogbookInfo" type="button"
+                            aria-label="Кнопка печатать">
+                        Печать
+                    </button>
                 </div>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="mileageOn">Пробег до</label>
-                  <input
-                    class="form-input js-testDriveRunBefore"
-                    id="mileageOn"
-                    name="UF_RUN_BEFORE"
-                    type="text"
-                    placeholder="Пробег до"
-                    aria-label="Пробег до тест-драйва"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="mileageOff">Пробег после</label>
-                  <input
-                    class="form-input js-testDriveRunAfter"
-                    id="mileageOff"
-                    name="UF_RUN_AFTER"
-                    type="text"
-                    placeholder="Пробег после"
-                    aria-label="Пробег после тест-драйва"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--full">
-              <div class="fieldset">
-                <label class="fieldset__title" for="description">Комментарий</label>
-                <textarea
-                  class="form-input form-input--textarea js-testDriveCommentary"
-                  id="description"
-                  name="UF_COMMENTARY"
-                  rows="4"
-                  placeholder="Оставьте комментарий"
-                ></textarea>
-              </div>
-            </div>
-            </div>
-
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="identityNumber">№ BY</label>
-                  <input
-                    class="form-input js-testDriveByNumber"
-                    id="identityNumber"
-                    name="UF_BY_NUMBER"
-                    type="text"
-                    placeholder="1AB 235425"
-                    aria-label="Серия и номер водительского удостоверения"
-                  />
-                </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="identityDatePicker">Дата выдачи</label>
-                  <input
-                    class="form-input js-testDriveIdentityDatePicker"
-                    id="identityDatePicker"
-                    name="UF_DATE_GIVE"
-                    type="text"
-                    placeholder="Дата выдачи"
-                    aria-label="Дата выдачи водительского удостоверения"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="form__row">
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <span class="fieldset__title">Статус</span>
-                  <label class="form-select">
-                    <select class="form-select__input js-testDriveStatus" name="UF_STATUS">
-                      <option class="form-select__optional" value="Запланирован">Запланирован</option>
-                      <option class="form-select__optional" value="Пройден">Пройден</option>
-                      <option class="form-select__optional" value="Отменен">Отменен</option>
-                      <option class="form-select__optional" value="Просрочен">Просрочен</option>
-                    </select>
-                  </label>
-                </div>
-              </div>
-              <div class="form__fieldset form__fieldset--half">
-                <div class="fieldset">
-                  <label class="fieldset__title" for="responsible">Ответственный</label>
-                  <input
-                    class="form-input js-testDriveAssigned"
-                    id="responsible"
-                    name="UF_ASSIGNED"
-                    type="text"
-                    placeholder="Ответственный"
-                    aria-label="Поле для ввода ФИО"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="form__footer">
-              <button class="button button--form-action js-sendLogbookInfo" type="submit" aria-label="Кнопка ок">
-                Ок
-              </button>
-              <button class="button button--form-action js-closeLogbookInfo" type="reset" aria-label="Кнопка отменить">
-                Отмена
-              </button>
-              <button class="button button--form-action js-sealLogbookInfo" type="button" aria-label="Кнопка печатать" >
-                Печать
-              </button>
-            </div>
-          </form>
+            </form>
         </section>
-      </div>
-    </main>
+    </div>
+</main>
 
-    <footer class="visually-hidden"></footer>
-  </body>
+<footer class="visually-hidden"></footer>
+</body>
 </html>

@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { initRangeDatePicker, selectedGeneralDate } from './datepicker'
-import { getDepartmentCarsList, getLogbookCarsList, saveLogbookInfo, getLogbookInfo, getLogbookPeople } from './server'
+import { getDepartmentCarsList, getLogbookCarsList, getLogbookInfo, getLogbookPeople, saveLogbookInfo } from './server'
 import { initTable } from './table'
 
 let isLogbookInfoShow = false
@@ -29,6 +29,12 @@ const testDriveRunAfter = logbookInfo.querySelector('.js-testDriveRunAfter')
 const testDriveCommentary = logbookInfo.querySelector('.js-testDriveCommentary')
 const testDriveByNumber = logbookInfo.querySelector('.js-testDriveByNumber')
 const testDriveAssigned = logbookInfo.querySelector('.js-testDriveAssigned')
+const testDriveAssignedSearch = logbookInfo.querySelector('.js-testDriveAssignedSearch')
+const testDriveAssignedContainer = logbookInfo.querySelector('.js-testDriveAssignedContainer')
+const testDriveOrder = logbookInfo.querySelector('.js-testDriveOrder')
+const testDriveOrderSearch = logbookInfo.querySelector('.js-testDriveOrderSearch')
+const testDriveOrderContainer = logbookInfo.querySelector('.js-testDriveOrderContainer')
+
 const testDriveCarId = logbookInfo.querySelector('.js-testDriveCarId')
 const testDriveId = logbookInfo.querySelector('.js-testDriveId')
 
@@ -301,6 +307,100 @@ const updateLogbookInfo = (data) => {
   }
 }
 
+const searchTestDriveAssigned = (e) => {
+  const searchName = e.target.value
+  const api = `https://crm.atlantm.com/esoft/test-drive/requests/searchentitieshttp.php?assigned_name=${searchName}`
+  const contacts = []
+
+  if (searchName.length < 2) {
+    testDriveAssignedSearch.innerHTML = ''
+
+    return false
+  } else {
+    fetch(api)
+      .then((response) => response.json())
+      .then((blob) => {
+        contacts.push(...blob)
+      })
+      .finally(() => {
+        testDriveAssignedSearch.innerHTML = contacts
+          .map((match) => {
+            const fio = `${match.LAST_NAME} ${match.NAME} ${match.SECOND_NAME}`
+
+            return `<li class="search__item js-addTestDriveAssign" data-name="${fio.trim()}" title="${fio.trim()}">
+                ${match.LAST_NAME} ${match.NAME} ${match.SECOND_NAME}
+              </li>`
+          })
+          .join('')
+      })
+  }
+}
+
+testDriveAssigned.addEventListener('keyup', (e) => searchTestDriveAssigned(e))
+
+document.addEventListener(
+  'click',
+  (event) => {
+    if (event.target.classList.contains('js-addTestDriveAssign')) {
+      addSearchTestDriveAssign(`${event.target.dataset.name}`)
+    }
+  },
+  false
+)
+
+const addSearchTestDriveAssign = (name) => {
+  console.info(name)
+  testDriveAssigned.value = name
+  testDriveAssignedSearch.innerHTML = ''
+}
+
+const searchTestDriveOrder = (e) => {
+  const searchName = e.target.value
+  const api = `https://crm.atlantm.com/esoft/test-drive/requests/searchentitieshttp.php?deal_title=${searchName}`
+  const contacts = []
+
+  if (searchName.length < 2) {
+    testDriveOrderSearch.innerHTML = ''
+
+    return false
+  } else {
+    fetch(api)
+      .then((response) => response.json())
+      .then((blob) => {
+        contacts.push(...blob)
+      })
+      .finally(() => {
+        testDriveOrderSearch.innerHTML = contacts
+          .map((match) => {
+            const order = `${match.TITLE}`
+
+            return `<li class="search__item js-addTestDriveOrder" data-name="${order.trim()}" title="${order.trim()}">
+                ${match.TITLE}
+              </li>`
+          })
+          .join('')
+      })
+  }
+}
+
+testDriveOrder.addEventListener('keyup', (e) => searchTestDriveOrder(e))
+
+document.addEventListener(
+  'click',
+  (event) => {
+    if (event.target.classList.contains('js-addTestDriveOrder')) {
+      addSearchTestDriveOrder(`${event.target.dataset.name}`)
+    }
+  },
+  false
+)
+
+const addSearchTestDriveOrder = (name) => {
+  console.info(name)
+  testDriveOrder.value = name
+  testDriveOrderSearch.innerHTML = ''
+}
+
 const closeLogbookInfo = (evt) => {
   if (!!evt) evt.preventDefault()
   isLogbookInfoShow = false
@@ -360,6 +460,7 @@ const sendForm = () => {
     UF_STATUS: testDriveStatus.value,
     UF_ASSIGNED: testDriveAssignedId.value,
   }
+  console.log(data)
 
   if (!emptyLogbookInfo) {
     data.ID = testDriveId.value
